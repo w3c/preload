@@ -144,10 +144,10 @@
         <p>The <dfn>loadpolicy</dfn> attribute consists of a space-separated set of the following keywords that determine the load and processing policy of the specified resource:</p>
 
         <dl>
-          <dt><dfn>next</dfn></dt> 
+          <dt><dfn>next</dfn></dt>
           <dd>Indicates that the specified resource is required by the next navigation context, and that the user agent SHOULD fetch the resource if possible.</dd>
 
-          <dt><dfn>inert</dfn></dt> 
+          <dt><dfn>inert</dfn></dt>
           <dd>Indicates that the user agent SHOULD NOT apply any preprocessing on the response - e.g., decode an image ahead of time, preparse HTML markup, parse the HTML markup and fetch and apply resources (i.e. render the next page), and so on.</dd>
         </dl>
 
@@ -320,7 +320,6 @@
 
     <section>
       <h2>Interoperability with HTTP Link header</h2>
-      <p>It OPTIONAL for a user agent to support [[!RFC598]].</p>
       <p>A user agent that support [[!RFC5988]] SHOULD process resource hints specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>.</p>
 
       <pre class="example">
