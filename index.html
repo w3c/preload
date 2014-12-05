@@ -116,7 +116,7 @@
       <dl>
         <dt><dfn>inert</dfn></dt>
         <dd>
-          <p>By default, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on. Preprocessing prepares the resource to be applied, but it MUST NOT automatically execute or apply it against the current page context. Specifying the <code><a>inert</a></code> policy indicates that the user agent MUST NOT apply any preprocessing on the response - e.g. image decodes may incur heavy resource usage that may interfere with page performance.</p>
+          <p>By default, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on. Preprocessing prepares the resource to be applied, but it MUST NOT automatically execute or apply it against the current page context. Specifying the <code><a>inert</a></code> policy indicates that the user agent SHOULD NOT apply any preprocessing on the response - e.g. image decodes may incur heavy resource usage that may interfere with page performance.</p>
 
           <p>The decision for which preprocessing steps are performed is deferred to the user agent. The user agent MAY implement various strategies to minimize resource contention based on the type and context of fetched response, impose limits on the properties of the resource, and so on:</p>
 
