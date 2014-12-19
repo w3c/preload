@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Preload</title>
+  <meta charset='utf-8'>
+  <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+  <script class='remove'>
+  var respecConfig = {
+    shortName: "preload",
+    specStatus: "ED",
+    edDraftURI: "http://w3c.github.io/resource-hints/",
+    editors: [{
+      name: "Ilya Grigorik",
+      url: "https://www.igvita.com/",
+      mailto: "igrigorik@gmail.com",
+      company: "Google",
+      companyURL: "https://google.com/"
+    }, ],
+    wg: "Web Performance Working Group",
+    wgURI: "http://www.w3.org/2010/webperf/",
+    wgPublicList: "public-web-perf",
+    format: "markdown",
+    noLegacyStyle: true,
+    otherLinks: [{
+      key: 'Repository',
+      data: [{
+        value: 'We are on Github.',
+        href: 'https://github.com/w3c/resource-hints/'
+      }, {
+        value: 'File a bug.',
+        href: 'https://github.com/w3c/resource-hints/issues'
+      }, {
+        value: 'Commit history.',
+        href: 'https://github.com/w3c/resource-hints/commits/gh-pages/index.html'
+      }]
+    }]
+  };
+  </script>
+</head>
+
+<body>
+  <section id='abstract'>
+    <p>This specification defines the <a>preload</a> relationship of the HTML Link Element (`<link>`).</p>
+  </section>
+
+  <section id='sotd'>
+    <p></p>
+  </section>
+
+  <section>
+    <h2>Introduction</h2>
+
+    <p>Many applications require fine-grained control over when resources are fetched, processed, and applied to the document. For example, the loading and processing of some resources may be deferred by the application to reduce resource contention and improve performance of the initial load. This behavior is typically achieved by moving resource fetching into custom resource loading logic defined by the application - i.e. resource fetches are initiated via injected elements, or via `XMLHttpRequest`, when particular application conditions are met.</p>
+
+    <p>However, there are also cases where some resources need to be fetched as early as possible, but their processing and execution logic is subject to application-specific requirements - e.g. dependency management, conditional loading, ordering guarantees, and so on. Currently, it is not possible to deliver this behavior without a performance penalty.</p>
+
+    <ul>
+    <li>Declaring a resource via one of the existing elements (e.g. `img`, `script`, `link`) couples resource fetching and execution. Whereas, an application may want to fetch, but delay execution of the resource until some condition is met.</li>
+    <li>Fetching resources with `XMLHttpRequest` to avoid above behavior incurs a serious performance penalty by hiding resource declarations from the user agent's DOM parser and preload scanners. The resource fetches are only dispatched when the relevant JavaScript is executed, which due to abundance of blocking scripts on most pages introduces significant delays and affects application performance.</li>
+    </ul>
+
+    <p>The <a>preload</a> relationship of the HTML Link Element provides a declarative fetch primitive that addresses the above use case of initiating an early fetch and separating fetching from resource execution. As such, <a>preload</a> relationship serves as a low-level primitive that enables applications to build custom resource loading and execution behaviors without hiding resources from the user agent and incurring delayed resource fetching penalties.</p>
+  </section>
+
+  <section>
+    <h2>Preload</h2>
+
+    <p>The <code><dfn>preload</dfn></code> relationship is used to declare a resource and its fetch properties. Initiating an early fetch allows the application to mask request latency and make it available sooner to the application, which can then decide when and in which order each resource is applied to the current document.</p>
+
+    <pre class="example highlight html">
+&lt;!-- preload a widget component --&gt;
+&lt;link rel="preload" href="/components/widget.html" as="html"&gt;
+
+&lt;!-- preload an application script --&gt;
+&lt;link rel="preload" href="/app/script.js" as="javascript"&gt;
+
+&lt;!-- preload a CSS stylesheet --&gt;
+&lt;link rel="preload" href="/style/style.css" as="stylesheet"&gt;
+
+&lt;!-- preload an image asset --&gt;
+&lt;link rel="preload" href="//example.com/image.jpg" as="image" media="screen and (max-width: 640px)" loadpolicy="inert"&gt;
+    </pre>
+
+    <section>
+      <h2>Fetch settings</h2>
+
+      <p>The <code><dfn>as</dfn></code> attribute allows the developer to communicate the <a href="https://fetch.spec.whatwg.org/#concept-request-context">request context</a> so that the user agent can initialize the appropriate fetch settings: relative request priority, appropriate HTTP headers, and so on.</p>
+
+      <pre class="example highlight html">
+&lt;link rel="preload" href="/assets/font.woff" as="font"&gt;
+&lt;link rel="preload" href="/assets/logo.webp" as="image"&gt;
+&lt;link rel="preload" href="//example.com/widget"&gt;
+      </pre>
+
+      <ul>
+        <li>The specified <code><a>as</a></code> value MUST be a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a> as defined in [[FETCH]].</li>
+        <li>If the <code><a>as</a></code> attribute is missing, the user agent MUST assign a default context.</li>
+        <li>Request defaults set by the user agent via <code><a>as</a></code> attribute MUST match the default settings set by the user agent when processing a resource with the same context. This behavior is necessary to guarantee correct prioritization and request matching - (see <a href="#matching-responses-with-requests"></a>).</li>
+      </ul>
+
+      <div class="note">
+        The resource destination context communicated via the <code><a>as</a></code> attribute is only used to initialize appropriate fetch settings; the communicated context is not meant to enforce security or other resource policies.
+      </div>
+    </section>
+    <section>
+      <h2>Load and processing policy</h2>
+
+      <p>The <code><dfn>loadpolicy</dfn></code> attribute consists of a space-separated set of the keywords that determine the load and processing policy of the specified resource:</p>
+
+      <pre class="example highlight html">
+&lt;link rel="preload" href="/assets/logo.jpg" as="image" loadpolicy="inert"&gt;
+&lt;link rel="preload" href="//example.com/widget"&gt;
+      </pre>
+
+      <dl>
+        <dt><dfn>inert</dfn></dt>
+        <dd>
+          <p>By default, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on. Preprocessing prepares the resource to be applied, but it MUST NOT automatically execute or apply it against the current page context. Specifying the <code><a>inert</a></code> policy indicates that the user agent SHOULD NOT apply any preprocessing on the response - e.g. image decodes may incur heavy resource usage that may interfere with page performance.</p>
+
+          <p>The decision for which preprocessing steps are performed is deferred to the user agent. The user agent MAY implement various strategies to minimize resource contention based on the type and context of fetched response, impose limits on the properties of the resource, and so on:</p>
+
+          <ul>
+            <li>The user agent MAY allocate fewer CPU, GPU, or memory resources for preprocessing.</li>
+            <li>A user agent MAY abandon preprocessing due to resource constraints.</li>
+            <ul>
+              <li>A user agent MAY prevent preprocessing from being initiated when there are limited resources available.</li>
+              <li>High resource requirements of the preloaded content may lead the user agent to cancel preprocessing - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
+            </ul>
+          </ul>
+
+          <p>The above processing strategies are not an exhaustive list. The decision which strategies to implement for each content-type and how to enforce them is deferred to the user agent.</p>
+        </dd>
+      </dl>
+
+      <div class="note">
+        <p>This specification defines a single policy. Resource Hints specification defines additional policies that can be applied to <a>preload</a> relationship.</p>
+      </div>
+    </section>
+  </section>
+
+  <section>
+    <h2>Process</h2>
+
+    <section>
+      <h2>Processing model</h2>
+
+      <p>The user agent MUST fetch the specified resource with same default settings and priority, as indicated by the <code><a>as</a></code> attribute, as a resource fetch initiated by the specified context - e.g. a "script" resource specified via <code><a>preload</a></code> relationship should be fetched with the same priority and settings as a script fetch initiated via a `script` element.<p>
+
+      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document unless the preload-initiated fetch is matched with a matching request that blocks the `load` event of the document - (see <a href="#matching-responses-with-requests"></a>).</p>
+    </section>
+
+    <section>
+      <h2>Dynamic scheduling</h2>
+      <p>In addition to the <code><a>preload</a></code> relations specified in the document markup, the application may dynamically insert and remove additional <code><a>preload</a></code> relations via JavaScript. The user agent MUST process dynamically inserted and removed <code><a>preload</a></code> relations in the same way as markup-declared relations.</p>
+
+      <pre class="example highlight js">
+  // insert new preload relation
+  var res = document.createElement("link");
+  res.rel = "preload";
+  res.loadpolicy = "next";
+  res.href = "/article/part3.html";
+  document.head.appendChild(res);
+
+  // cancel preload
+  document.head.removeChild(res);
+      </pre>
+
+      <div class="issue">
+        TODO: define what happens when element is removed from DOM?
+      </div>
+    </section>
+
+    <section>
+      <h2>Load and error events</h2>
+      <p>Once the attempt to obtain the resource is complete, the user agent MUST, if the fetch was successful, queue a task to fire a simple event named `load` at the `link` element, or, if the fetch failed to complete for any reason, queue a task to fire a simple event named `error` at the `link` element.</p>
+
+      <pre class="example highlight html">
+&lt;script&gt;
+  function preloadFinished(e) { ... }
+  function preloadError(e)  { ... }
+&lt;/script&gt;
+
+&lt;!-- listen for load and error events --&gt;
+&lt;link rel="preload" href="app.js" as="script" onload="preloadFinished()" onerror="preloadError()"&gt;
+      </pre>
+
+      <div class="note">
+        The application can use the `load` event on a <a>preload</a> relation as an indicator that the resource has been successfully fetched and is now ready to be processed by the application - e.g. a stylesheet or script can be applied to a document, and so on, without blocking on the network.
+      </div>
+    </section>
+
+    <section>
+      <h2>Interoperability with HTTP Link header</h2>
+      <p>A user agent that support [[!RFC5988]] MUST process preload relations specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>. The application can provide one or more preload relations via multiple HTTP headers or via a comma separated list.</p>
+
+      <pre class="example">
+  Link: &lt;https://example.com/font.woff&gt;; rel=preload; as=font
+  Link: &lt;https://example.com/app/script.js&gt;; rel=preload; loadpolicy=inert
+  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx
+      </pre>
+    </section>
+
+    <section>
+      <h2>Matching responses with requests</h2>
+
+      <p>Resources fetched via <code><a>preload</a></code> relation MUST be retained by the user agent for the duration of the current navigation until they are fetched with a matching request.</p>
+
+      <p>For example, if a JavaScript resource is fetched via a <code><a>preload</a></code> relation and the response contains a `no-cache` directive, the fetched response is retained by the user agent and is made immediately available when fetched with a matching same navigation request at a later time - e.g. via a `script` tag or other means. This ensures that the user agent does not incur an unnecessary revalidation, or a duplicate download, between the initial resource fetch initiated via the preload relation and a later fetch requesting the same resource.</p>
+
+      <div class="note">
+        <p>The concept of "matching" is not currently defined or interoperable across user agents. This should be fixed, but it is out of scope of this specification. For further discussion see <a href="https://github.com/igrigorik/resource-hints/issues/5">this bug</a> and <a href="https://groups.google.com/a/chromium.org/forum/#!msg/net-dev/cFhaIoJCRFg/3JX9lPWnDPIJ">chromium discussion</a>.</p>
+      </div>
+    </section>
+  </section>
+
+  <section>
+    <h2>Use cases</h2>
+
+    <section>
+      <h2>Early fetch of critical resources</h2>
+      <p>Speculative parsers are used by most user agents to initiate early resource fetches while the main document parser is blocked due to a blocking script. However, these speculative parsers do not execute JavaScript, and typically only perform a shallow parse of CSS, which means that the fetch of resources specified within JavaScript and CSS is delayed until the relevant document parser is able to process the resource declaration.</p>
+
+      <p>In effect, most resources declarations specified within JavaScript and CSS are "hidden" from the speculative parsers and incur a performance penalty. To address this, the application can use the <a title="preload">preload relation</a> to declaratively specify which resources the user agent must fetch early to improve page performance.</p>
+    </section>
+
+    <section>
+      <h2>Early fetch and application defined execution</h2>
+
+      <p>The <a title="preload">preload relation</a> can be used by the application to initiate early fetch of one or more resources, as well as to provide custom logic for when and how each response should be applied to the document. The application may:</p>
+
+      <ul>
+        <li>Decide to immediately apply each resource as it becomes available.</li>
+        <li>Ensure that resources are applied in some application specific order.</li>
+        <li>Apply resources conditionally based on arbitrary resource or application criteria.</li>
+        <li>Defer resource application until some application condition is met.</li>
+      </ul>
+
+      <p>The <a title="preload">preload relation</a> provides a low-level and content-type agnostic primitive that enables applications to build custom resource loading and execution behaviors without incurring the penalty of delayed resource loading.</p>
+
+      <p>For example, <a title="preload">preload relation</a> enables the application to provide `async` and `defer` like semantics, which are only available on `script` elements today, but for any content-type: applying the resource immediately after it is available provides `async` functionality, whereas adding some ordering logic enables `defer` functionality. Further, this behavior can be defined across a mix of content-types - the application is in full control over when and how each resource is applied.</p>
+
+      <p>By decoupling resource fetching from execution, the <a title="preload">preload relation</a> provides a future-proof primitive for building performant application specific resource loading strategies.</p>
+    </section>
+
+    <section>
+      <h2>Developer, server, and proxy-initiated fetching</h2>
+      <p>The <a title="preload">preload relation</a> can be specified by the developer, or be automatically generated by the application server or an optimization proxy (e.g. a CDN).
+
+        <ul>
+          <li>The application can specify preload relations, allowing:</li>
+          <ul>
+            <li>The user agent to initiate early fetch of critical resources.</li>
+            <li>The optimization proxy to fetch the critical resources and place them into its cache ahead of time, thus reducing or eliminating the latency of retrieving resources from origin.</li>
+          </ul>
+
+          <li>The optimization proxy can specify preload relations on behalf of the application:</li>
+          <ul>
+            <li>The proxy can observe and infer critical resources based on past request patterns, allowing it to automate generation of relevant preload relations to improve page performance.</li>
+            <li>The proxy can deliver inferred preload relations to the user agent while it is blocked on the response from the origin, allowing the user agent to begin early fetch of associated critical resources.</li>
+            <ul>
+              <li>Many existing optimization proxies implement "early flush" strategies where references to associated critical resources are automatically delivered to the user agent while the proxy is blocked on the response from the origin. Today, this is typically done by creating a fake document `head` that contains `XMLHttpRequest`, `image`, and `object` requests for the associated critical resources. However, in practice, these implementations are brittle and often result in prioritization conflicts with requests initiated by speculative and document parsers, or worse, result in delayed or double downloads due to missing request context information. The <a title="preload">preload relation</a> addresses these problems by providing a declarative fetch primitive, and interoperability with the HTTP Link header, that communicates both the URL and the context of the resource.</li>
+            </ul>
+          </ul>
+        </ul>
+
+
+    </section>
+  </section>
+
+  <section class="appendix">
+    <h2>Acknowledgments</h2>
+    <p>This document reuses text from the [[!HTML]] specification, edited by Ian Hickson, as permitted by the license of that specification.</p>
+  </section>
+
+</body>
+</html>
