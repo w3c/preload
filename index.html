@@ -70,7 +70,7 @@
 
     <pre class="example highlight html">
 &lt;!-- preload a widget component --&gt;
-&lt;link rel="preload" href="/components/widget.html" as="html"&gt;
+&lt;link rel="preload" href="/components/widget.html" as="iframe"&gt;
 
 &lt;!-- preload an application script --&gt;
 &lt;link rel="preload" href="/app/script.js" as="javascript"&gt;
@@ -79,76 +79,37 @@
 &lt;link rel="preload" href="/style/style.css" as="stylesheet"&gt;
 
 &lt;!-- preload an image asset --&gt;
-&lt;link rel="preload" href="//example.com/image.jpg" as="image" media="screen and (max-width: 640px)" loadpolicy="inert"&gt;
+&lt;link rel="preload" href="//example.com/image.jpg" as="image" media="screen and (max-width: 640px)"&gt;
     </pre>
 
-    <section>
-      <h2>Fetch settings</h2>
+    <ul>
+      <li>The user agent MUST fetch the specified resource with same default settings and priority, as indicated by the <code><a>as</a></code> attribute, as a resource fetch initiated by the specified context - e.g. a "script" resource specified via <code><a>preload</a></code> relationship MUST be fetched with the same priority and settings as a script fetch initiated via a `script` element.</li>
 
-      <p>The <code><dfn>as</dfn></code> attribute allows the developer to communicate the <a href="https://fetch.spec.whatwg.org/#concept-request-context">request context</a> so that the user agent can initialize the appropriate fetch settings: relative request priority, appropriate HTTP headers, and so on.</p>
+      <li>The user agent MUST NOT automatically execute or apply the fetched response against the current page context.</li>
+
+      <li>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document unless the preload-initiated fetch is matched with a matching request that blocks the `load` event of the document - see <a href="#matching-responses-with-requests"></a>.</li>
+    </ul>
+
+    <section>
+      <h2>Initializing fetch settings</h2>
+
+      <p>The <code><dfn>as</dfn></code> attribute on a <a>preload</a> relationship specifies the <a href="https://fetch.spec.whatwg.org/#concept-request-context">request context</a> used to initialize appropriate fetch settings - e.g. request priority, HTTP headers, etc.</p>
 
       <pre class="example highlight html">
 &lt;link rel="preload" href="/assets/font.woff" as="font"&gt;
 &lt;link rel="preload" href="/assets/logo.webp" as="image"&gt;
-&lt;link rel="preload" href="//example.com/widget"&gt;
+&lt;link rel="preload" href="//example.com/widget" as="iframe"&gt;
       </pre>
 
       <ul>
-        <li>The <code><a>as</a></code> attribute is a required attribute.</li>
-        <li>The specified <code><a>as</a></code> value MUST be a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a> as defined in [[FETCH]].</li>
-        <li>If the <code><a>as</a></code> attribute is omitted, or the value contains an invalid request context, then the user agent SHOULD output a developer-friendly warning and abort further processing of the relationship.</li>
-        <li>Request defaults set by the user agent via <code><a>as</a></code> attribute MUST match the default settings set by the user agent when processing a resource with the same context. This behavior is necessary to guarantee correct prioritization and request matching - (see <a href="#matching-responses-with-requests"></a>).</li>
+        <li>The <code><a>as</a></code> attribute is a REQUIRED attribute for a <a>preload</a> relationship. The specified <code><a>as</a></code> value MUST be a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a> as defined in [[FETCH]]. If the <code><a>as</a></code> attribute is omitted, or the specified value does not contain a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a>, then the user agent SHOULD output a developer-friendly warning and ignore the <a>preload</a> relationship.</li>
+
+        <li>Request defaults set by the user agent via <code><a>as</a></code> attribute MUST match the default settings set by the user agent when processing a resource with the same context. This behavior is necessary to guarantee correct prioritization and request matching - see <a href="#matching-responses-with-requests"></a>.</li>
       </ul>
 
       <div class="note">
         The resource destination context communicated via the <code><a>as</a></code> attribute is only used to initialize appropriate fetch settings; the communicated context is not meant to enforce security or other resource policies.
       </div>
-    </section>
-    <section>
-      <h2>Load and processing policy</h2>
-
-      <p>The <code><dfn>loadpolicy</dfn></code> attribute consists of a space-separated set of the keywords that determine the load and processing policy of the specified resource:</p>
-
-      <pre class="example highlight html">
-&lt;link rel="preload" href="/assets/logo.jpg" as="image" loadpolicy="inert"&gt;
-&lt;link rel="preload" href="//example.com/widget"&gt;
-      </pre>
-
-      <dl>
-        <dt><dfn>inert</dfn></dt>
-        <dd>
-          <p>By default, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on. Preprocessing prepares the resource to be applied, but it MUST NOT automatically execute or apply it against the current page context. Specifying the <code><a>inert</a></code> policy indicates that the user agent SHOULD NOT apply any preprocessing on the response - e.g. image decodes may incur heavy resource usage that may interfere with page performance.</p>
-
-          <p>The decision for which preprocessing steps are performed is deferred to the user agent. The user agent MAY implement various strategies to minimize resource contention based on the type and context of fetched response, impose limits on the properties of the resource, and so on:</p>
-
-          <ul>
-            <li>The user agent MAY allocate fewer CPU, GPU, or memory resources for preprocessing.</li>
-            <li>A user agent MAY abandon preprocessing due to resource constraints.</li>
-            <ul>
-              <li>A user agent MAY prevent preprocessing from being initiated when there are limited resources available.</li>
-              <li>High resource requirements of the preloaded content may lead the user agent to cancel preprocessing - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
-            </ul>
-          </ul>
-
-          <p>The above processing strategies are not an exhaustive list. The decision which strategies to implement for each content-type and how to enforce them is deferred to the user agent.</p>
-        </dd>
-      </dl>
-
-      <div class="note">
-        <p>This specification defines a single policy. Resource Hints specification defines additional policies that can be applied to <a>preload</a> relationship.</p>
-      </div>
-    </section>
-  </section>
-
-  <section>
-    <h2>Process</h2>
-
-    <section>
-      <h2>Processing model</h2>
-
-      <p>The user agent MUST fetch the specified resource with same default settings and priority, as indicated by the <code><a>as</a></code> attribute, as a resource fetch initiated by the specified context - e.g. a "script" resource specified via <code><a>preload</a></code> relationship MUST be fetched with the same priority and settings as a script fetch initiated via a `script` element.<p>
-
-      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document unless the preload-initiated fetch is matched with a matching request that blocks the `load` event of the document - (see <a href="#matching-responses-with-requests"></a>).</p>
     </section>
 
     <section>
@@ -158,19 +119,19 @@
       <pre class="example">
   Link: &lt;https://example.com/font.woff&gt;; rel=preload; as=font
   Link: &lt;https://example.com/app/script.js&gt;; rel=preload; as=script
-  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx
+  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image
       </pre>
 
       <pre class="example highlight js">
-  &lt;link rel="preload" href="//example.com/next-page.html" as="html"&gt;
+  &lt;link rel="preload" href="//example.com/widget.html" as="iframe"&gt;
       </pre>
 
       <pre class="example highlight js">
   &lt;script&gt;
   var res = document.createElement("link");
   res.rel = "preload";
-  res.as = "html";
-  res.href = "/article/part3.html";
+  res.as = "iframe";
+  res.href = "/other/widget.html";
   document.head.appendChild(res);
   &lt;/script&gt;
       </pre>
