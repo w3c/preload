@@ -145,7 +145,7 @@
     <section>
       <h2>Processing model</h2>
 
-      <p>The user agent MUST fetch the specified resource with same default settings and priority, as indicated by the <code><a>as</a></code> attribute, as a resource fetch initiated by the specified context - e.g. a "script" resource specified via <code><a>preload</a></code> relationship should be fetched with the same priority and settings as a script fetch initiated via a `script` element.<p>
+      <p>The user agent MUST fetch the specified resource with same default settings and priority, as indicated by the <code><a>as</a></code> attribute, as a resource fetch initiated by the specified context - e.g. a "script" resource specified via <code><a>preload</a></code> relationship MUST be fetched with the same priority and settings as a script fetch initiated via a `script` element.<p>
 
       <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document unless the preload-initiated fetch is matched with a matching request that blocks the `load` event of the document - (see <a href="#matching-responses-with-requests"></a>).</p>
     </section>
