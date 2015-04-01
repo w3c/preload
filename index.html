@@ -94,8 +94,9 @@
       </pre>
 
       <ul>
+        <li>The <code><a>as</a></code> attribute is a required attribute.</li>
         <li>The specified <code><a>as</a></code> value MUST be a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a> as defined in [[FETCH]].</li>
-        <li>If the <code><a>as</a></code> attribute is missing, the user agent MUST assign a default context.</li>
+        <li>If the <code><a>as</a></code> attribute is omitted, or the value contains an invalid request context, then the user agent SHOULD output a developer-friendly warning and abort further processing of the relationship.</li>
         <li>Request defaults set by the user agent via <code><a>as</a></code> attribute MUST match the default settings set by the user agent when processing a resource with the same context. This behavior is necessary to guarantee correct prioritization and request matching - (see <a href="#matching-responses-with-requests"></a>).</li>
       </ul>
 
