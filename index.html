@@ -151,24 +151,39 @@
     </section>
 
     <section>
-      <h2>Dynamic scheduling</h2>
-      <p>In addition to the <code><a>preload</a></code> relations specified in the document markup, the application may dynamically insert and remove additional <code><a>preload</a></code> relations via JavaScript. The user agent MUST process dynamically inserted and removed <code><a>preload</a></code> relations in the same way as markup-declared relations.</p>
+      <h2>Fetching the preload link</h2>
+      <p>A <dfn>preload link</dfn> is a <a>preload</a> relationship that is used to indicate a resource that should fetched by the user agent. The <a>preload link</a>'s MAY be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
 
-      <pre class="example highlight js">
-  // insert new preload relation
-  var res = document.createElement("link");
-  res.rel = "preload";
-  res.loadpolicy = "next";
-  res.href = "/article/part3.html";
-  document.head.appendChild(res);
-
-  // cancel preload
-  document.head.removeChild(res);
+      <pre class="example">
+  Link: &lt;https://example.com/font.woff&gt;; rel=preload; as=font
+  Link: &lt;https://example.com/app/script.js&gt;; rel=preload; as=script
+  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx
       </pre>
 
-      <div class="issue">
-        TODO: define what happens when element is removed from DOM?
-      </div>
+      <pre class="example highlight js">
+  &lt;link rel="preload" href="//example.com/next-page.html" as="html"&gt;
+      </pre>
+
+      <pre class="example highlight js">
+  &lt;script&gt;
+  var res = document.createElement("link");
+  res.rel = "preload";
+  res.as = "html";
+  res.href = "/article/part3.html";
+  document.head.appendChild(res);
+  &lt;/script&gt;
+      </pre>
+
+      <p>The appropriate times to <a href="http://www.w3.org/TR/html5/document-metadata.html#concept-link-obtain">obtain</a> the specified resource are:</p>
+
+      <ul>
+        <li>When the user agent that supports [[!RFC5988]] processes <a>preload link</a>'s specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>.
+        <li>When the <a>preload link</a> is created on a `link` element that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a>.</li>
+        <li>When the `href` attribute of the `link` element of an <a>preload link</a> that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is changed.
+        </li>
+      </ul>
+
+      <p>The user agent SHOULD abort the request if the `href` attribute on the `link` element of an <a>preload link</a> is removed, or its value is set to an empty string.</p>
     </section>
 
     <section>
@@ -188,17 +203,6 @@
       <div class="note">
         The application can use the `load` event on a <a>preload</a> relation as an indicator that the resource has been successfully fetched and is now ready to be processed by the application - e.g. a stylesheet or script can be applied to a document, and so on, without blocking on the network.
       </div>
-    </section>
-
-    <section>
-      <h2>Interoperability with HTTP Link header</h2>
-      <p>A user agent that support [[!RFC5988]] MUST process preload relations specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>. The application can provide one or more preload relations via multiple HTTP headers or via a comma separated list.</p>
-
-      <pre class="example">
-  Link: &lt;https://example.com/font.woff&gt;; rel=preload; as=font
-  Link: &lt;https://example.com/app/script.js&gt;; rel=preload; loadpolicy=inert
-  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx
-      </pre>
     </section>
 
     <section>
