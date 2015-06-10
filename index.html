@@ -140,9 +140,10 @@
 
       <ul>
         <li>When the user agent that supports [[!RFC5988]] processes <a>preload link</a>'s specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>.
+        <li>When the <a>preload link</a>'s link element is <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">inserted into a Document</a>.</li>
         <li>When the <a>preload link</a> is created on a `link` element that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a>.</li>
-        <li>When the `href` attribute of the `link` element of an <a>preload link</a> that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is changed.
-        </li>
+        <li>When the `href` attribute of the `link` element of an <a>preload link</a> that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is changed.</li>
+        <li> When the `crossorigin` attribute of the link element of a <a>preload link</a> that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is set, changed, or removed.</li>
       </ul>
 
       <p>The user agent SHOULD abort the request if the `href` attribute on the `link` element of an <a>preload link</a> is removed, or its value is set to an empty string.</p>
