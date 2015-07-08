@@ -70,21 +70,19 @@
 
     <pre class="example highlight html">
 &lt;!-- preload a widget component --&gt;
-&lt;link rel="preload" href="/components/widget.html" as="iframe"&gt;
+&lt;link rel="preload" href="/components/widget.html" type="text/html"&gt;
 
 &lt;!-- preload an application script --&gt;
-&lt;link rel="preload" href="/app/script.js" as="javascript"&gt;
+&lt;link rel="preload" href="/app/script.js" type="text/javascript"&gt;
 
 &lt;!-- preload a CSS stylesheet --&gt;
-&lt;link rel="preload" href="/style/style.css" as="stylesheet"&gt;
+&lt;link rel="preload" href="/style/style.css" type="text/css"&gt;
 
 &lt;!-- preload an image asset --&gt;
-&lt;link rel="preload" href="//example.com/image.jpg" as="image" media="screen and (max-width: 640px)"&gt;
+&lt;link rel="preload" href="//example.com/image.jpg" type="image/jpeg" media="screen and (max-width: 640px)" crossorigin&gt;
     </pre>
 
     <ul>
-      <li>The user agent MUST fetch the specified resource with same default settings and priority, as indicated by the <code><a>as</a></code> attribute, as a resource fetch initiated by the specified context - e.g. a "script" resource specified via <code><a>preload</a></code> relationship MUST be fetched with the same priority and settings as a script fetch initiated via a `script` element.</li>
-
       <li>The user agent MUST NOT automatically execute or apply the fetched response against the current page context.</li>
 
       <li>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document unless the preload-initiated fetch is matched with a matching request that blocks the `load` event of the document - see <a href="#matching-responses-with-requests"></a>.</li>
@@ -93,25 +91,18 @@
     <section>
       <h2>Initializing fetch settings</h2>
 
-      <p>The <code><dfn>crossorigin</dfn></code> <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#cors-settings-attributes">CORS setting attribute</a> is an OPTIONAL attribute that indicates the CORS policy of the specified resource.</p>
-
-      <p>The <code><dfn>as</dfn></code> attribute on a <a>preload</a> relationship specifies the <a href="https://fetch.spec.whatwg.org/#concept-request-context">request context</a> used to initialize appropriate fetch settings - e.g. request priority, HTTP headers, etc.</p>
-
       <pre class="example highlight html">
-&lt;link rel="preload" href="/assets/font.woff" as="font"&gt;
-&lt;link rel="preload" href="/assets/logo.webp" as="image"&gt;
-&lt;link rel="preload" href="//example.com/widget" as="iframe"&gt;
+&lt;link rel="preload" href="/asset/font.woff" type="application/font-woff"&gt;
+&lt;link rel="preload" href="/asset/logo.webp" type="image/webp"&gt;
+&lt;link rel="preload" href="//example.com/other.jpeg" type="image/jpeg" crossorigin&gt;
+&lt;link rel="preload" href="//example.com/widget" type="text/html"&gt;
       </pre>
 
       <ul>
-        <li>The <code><a>as</a></code> attribute is a REQUIRED attribute for a <a>preload</a> relationship. The specified <code><a>as</a></code> value MUST be a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a> as defined in [[FETCH]]. If the <code><a>as</a></code> attribute is omitted, or the specified value does not contain a valid <a href="http://fetch.spec.whatwg.org/#concept-request-context">request context</a>, then the user agent SHOULD output a developer-friendly warning and ignore the <a>preload</a> relationship.</li>
+        <li>The <code><dfn>crossorigin</dfn></code> <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#cors-settings-attributes">CORS setting attribute</a> is an OPTIONAL attribute that indicates the CORS policy of the specified resource.</li>
 
-        <li>Request defaults set by the user agent via <code><a>as</a></code> attribute MUST match the default settings set by the user agent when processing a resource with the same context. This behavior is necessary to guarantee correct prioritization and request matching - see <a href="#matching-responses-with-requests"></a>.</li>
+        <li>The <code><dfn><a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-type">type</a></dfn></code> attribute is an OPTIONAL attribute whose value MUST be a <a href="http://www.w3.org/TR/html5/infrastructure.html#valid-mime-type">valid MIME type</a> and MAY be used by the user agent to initialize appropriate <a href="https://fetch.spec.whatwg.org/#fetching">fetch settings</a> - e.g. HTTP request headers, request and transport priorities, etc.</li>
       </ul>
-
-      <div class="note">
-        The resource destination context communicated via the <code><a>as</a></code> attribute is only used to initialize appropriate fetch settings; the communicated context is not meant to enforce security or other resource policies.
-      </div>
     </section>
 
     <section>
@@ -119,20 +110,20 @@
       <p>A <dfn>preload link</dfn> is a <a>preload</a> relationship that is used to indicate a resource that should fetched by the user agent. The <a>preload link</a>'s MAY be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
 
       <pre class="example">
-  Link: &lt;https://example.com/font.woff&gt;; rel=preload; as=font
-  Link: &lt;https://example.com/app/script.js&gt;; rel=preload; as=script
-  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image
+  Link: &lt;https://example.com/font.woff&gt;; rel=preload; type=application/font-woff
+  Link: &lt;https://example.com/app/script.js&gt;; rel=preload; type=text/javascript
+  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; type=image/jpeg
       </pre>
 
       <pre class="example highlight js">
-  &lt;link rel="preload" href="//example.com/widget.html" as="iframe"&gt;
+  &lt;link rel="preload" href="//example.com/widget.html" type="text/html"&gt;
       </pre>
 
       <pre class="example highlight js">
   &lt;script&gt;
   var res = document.createElement("link");
   res.rel = "preload";
-  res.as = "iframe";
+  res.type = "text/html";
   res.href = "/other/widget.html";
   document.head.appendChild(res);
   &lt;/script&gt;
@@ -163,7 +154,7 @@
 &lt;/script&gt;
 
 &lt;!-- listen for load and error events --&gt;
-&lt;link rel="preload" href="app.js" as="script" onload="preloadFinished()" onerror="preloadError()"&gt;
+&lt;link rel="preload" href="app.js" type="text/javascript" onload="preloadFinished()" onerror="preloadError()"&gt;
       </pre>
 
       <div class="note">
