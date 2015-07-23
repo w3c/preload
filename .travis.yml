@@ -1,17 +1,14 @@
 language: node_js
-
 branches:
   only:
-    - gh-pages
-
+  - gh-pages
 env:
   global:
-    - URL="http://w3c.github.io/preload/W3CTRMANIFEST"
-    - DECISION="http://www.w3.org/2015/06/24-webperf-minutes.html#item01"
-    - secure: "<your encrypted token here!>"
-
+  - URL="http://w3c.github.io/preload/W3CTRMANIFEST"
+  - DECISION="http://www.w3.org/2015/06/24-webperf-minutes.html#item01"
+  - secure: "OD0xSOflLLMFRJaocKF0carrc/i8ZWHVHv5F6y6GCstRDw1PQHqzMT3JdbsU+OKBC3wNKXDC+Kj7M6YMy2rUbEI1jB3YPuHtilZ09YQTZCQ+5BslPOEMpEgUTEFFCOwZwTClQcnA48pFohuPnnO8MKknjanQwNtWFKWHvuXjdwM="
 script:
-  - echo "ok"
-
+- echo "ok"
 after_success:
-  - curl "https://labs.w3.org/echidna/api/request" --data "url=$URL" --data "decision=$DECISION" --data "token=$TOKEN"
+- curl "https://labs.w3.org/echidna/api/request" --data "url=$URL" --data "decision=$DECISION"
+  --data "token=$TOKEN"
