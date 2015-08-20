@@ -77,7 +77,7 @@ notices. </p>
   <section>
     <h2>Preload</h2>
 
-    <p>The <code><dfn>preload</dfn></code> relationship is used to declare a resource and its fetch properties. Initiating an early fetch allows the application to mask request latency and make it available sooner to the application, which can then decide when and in which order each resource is applied to the current document.</p>
+    <p>The <code><dfn data-lt="preload relation">preload</dfn></code> relationship is used to declare a resource and its fetch properties. Initiating an early fetch allows the application to mask request latency and make it available sooner to the application, which can then decide when and in which order each resource is applied to the current document.</p>
 
     <pre class="example highlight html">
 &lt;!-- preload a widget component --&gt;
@@ -202,13 +202,13 @@ notices. </p>
       <h2>Early fetch of critical resources</h2>
       <p>Speculative parsers are used by most user agents to initiate early resource fetches while the main document parser is blocked due to a blocking script. However, these speculative parsers do not execute JavaScript, and typically only perform a shallow parse of CSS, which means that the fetch of resources specified within JavaScript and CSS is delayed until the relevant document parser is able to process the resource declaration.</p>
 
-      <p>In effect, most resources declarations specified within JavaScript and CSS are "hidden" from the speculative parsers and incur a performance penalty. To address this, the application can use the <a title="preload">preload relation</a> to declaratively specify which resources the user agent must fetch early to improve page performance.</p>
+      <p>In effect, most resources declarations specified within JavaScript and CSS are "hidden" from the speculative parsers and incur a performance penalty. To address this, the application can use the <a>preload relation</a> to declaratively specify which resources the user agent must fetch early to improve page performance.</p>
     </section>
 
     <section>
       <h2>Early fetch and application defined execution</h2>
 
-      <p>The <a title="preload">preload relation</a> can be used by the application to initiate early fetch of one or more resources, as well as to provide custom logic for when and how each response should be applied to the document. The application may:</p>
+      <p>The <a>preload relation</a> can be used by the application to initiate early fetch of one or more resources, as well as to provide custom logic for when and how each response should be applied to the document. The application may:</p>
 
       <ul>
         <li>Decide to immediately apply each resource as it becomes available.</li>
@@ -217,16 +217,16 @@ notices. </p>
         <li>Defer resource application until some application condition is met.</li>
       </ul>
 
-      <p>The <a title="preload">preload relation</a> provides a low-level and content-type agnostic primitive that enables applications to build custom resource loading and execution behaviors without incurring the penalty of delayed resource loading.</p>
+      <p>The <a>preload relation</a> provides a low-level and content-type agnostic primitive that enables applications to build custom resource loading and execution behaviors without incurring the penalty of delayed resource loading.</p>
 
-      <p>For example, <a title="preload">preload relation</a> enables the application to provide `async` and `defer` like semantics, which are only available on `script` elements today, but for any content-type: applying the resource immediately after it is available provides `async` functionality, whereas adding some ordering logic enables `defer` functionality. Further, this behavior can be defined across a mix of content-types - the application is in full control over when and how each resource is applied.</p>
+      <p>For example, <a>preload relation</a> enables the application to provide `async` and `defer` like semantics, which are only available on `script` elements today, but for any content-type: applying the resource immediately after it is available provides `async` functionality, whereas adding some ordering logic enables `defer` functionality. Further, this behavior can be defined across a mix of content-types - the application is in full control over when and how each resource is applied.</p>
 
-      <p>By decoupling resource fetching from execution, the <a title="preload">preload relation</a> provides a future-proof primitive for building performant application specific resource loading strategies.</p>
+      <p>By decoupling resource fetching from execution, the <a>preload relation</a> provides a future-proof primitive for building performant application specific resource loading strategies.</p>
     </section>
 
     <section>
       <h2>Developer, server, and proxy-initiated fetching</h2>
-      <p>The <a title="preload">preload relation</a> can be specified by the developer, or be automatically generated by the application server or an optimization proxy (e.g. a CDN).
+      <p>The <a>preload relation</a> can be specified by the developer, or be automatically generated by the application server or an optimization proxy (e.g. a CDN).
 
         <ul>
           <li>The application can specify preload relations, allowing:
@@ -240,7 +240,7 @@ notices. </p>
             <li>The proxy can observe and infer critical resources based on past request patterns, allowing it to automate generation of relevant preload relations to improve page performance.</li>
             <li>The proxy can deliver inferred preload relations to the user agent while it is blocked on the response from the origin, allowing the user agent to begin early fetch of associated critical resources.
             <ul>
-              <li>Many existing optimization proxies implement "early flush" strategies where references to associated critical resources are automatically delivered to the user agent while the proxy is blocked on the response from the origin. Today, this is typically done by creating a fake document `head` that contains `XMLHttpRequest`, `image`, and `object` requests for the associated critical resources. However, in practice, these implementations are brittle and often result in prioritization conflicts with requests initiated by speculative and document parsers, or worse, result in delayed or double downloads due to missing request context information. The <a title="preload">preload relation</a> addresses these problems by providing a declarative fetch primitive, and interoperability with the HTTP Link header, that communicates both the URL and the context of the resource.</li>
+              <li>Many existing optimization proxies implement "early flush" strategies where references to associated critical resources are automatically delivered to the user agent while the proxy is blocked on the response from the origin. Today, this is typically done by creating a fake document `head` that contains `XMLHttpRequest`, `image`, and `object` requests for the associated critical resources. However, in practice, these implementations are brittle and often result in prioritization conflicts with requests initiated by speculative and document parsers, or worse, result in delayed or double downloads due to missing request context information. The <a>preload relation</a> addresses these problems by providing a declarative fetch primitive, and interoperability with the HTTP Link header, that communicates both the URL and the context of the resource.</li>
             </ul>
             </li>
           </ul>
