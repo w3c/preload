@@ -226,14 +226,13 @@ document.head.appendChild(res);
         </li>
       </ul>
       <p class="note">For example, if a JavaScript resource is fetched via a
-      <code><a>preload</a></code> relation and the response contains a
-      `no-cache` directive, the fetched response is retained by the user agent
-      and is made immediately available when fetched with a matching same
-      navigation request at a later time - e.g. via a `script` tag or other
-      means. This ensures that the user agent does not incur an unnecessary
-      revalidation, or a duplicate download, between the initial resource fetch
-      initiated via the preload link and a later fetch requesting the same
-      resource.</p>
+      <a>preload link</a> and the response contains a `no-cache` directive, the
+      fetched response is retained by the user agent and is made immediately
+      available when fetched with a matching same navigation request at a later
+      time - e.g. via a `script` tag or other means. This ensures that the user
+      agent does not incur an unnecessary revalidation, or a duplicate
+      download, between the initial resource fetch initiated via the preload
+      link and a later fetch requesting the same resource.</p>
     </section>
     <section>
       <h2>Link element interface extensions</h2>
