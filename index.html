@@ -279,6 +279,7 @@ document.head.appendChild(res);
 &lt;link rel="preload" href="/assets/font.woff" as="font"&gt;
 &lt;link rel="preload" href="/style/other.css" as="style"&gt;
 &lt;link rel="preload" href="//example.com/resource"&gt;
+&lt;link rel="preload" href="https://fonts.example.com/font.woff" as="font" crossorigin&gt;
 </pre>
       <p>Above markup initiates three resource fetches: a font resource, a
       stylesheet, and an unknown resource type from another origin. Each fetch
@@ -334,6 +335,7 @@ document.head.appendChild(res);
   Link: &lt;https://example.com/font.woff&gt;; rel=preload; as=font
   Link: &lt;https://example.com/app/script.js&gt;; rel=preload; as=script
   Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image
+  Link: &lt;https://fonts.example.com/font.woff&gt;; rel=preload; as=font; crossorigin
 </pre>
       <pre class="example highlight js">
   &lt;link rel="preload" href="//example.com/widget.html" as="iframe"&gt;
