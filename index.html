@@ -252,6 +252,32 @@ document.head.appendChild(res);
     </section>
   </section>
   <section>
+    <h2>Feature detection</h2>
+    <p>Support for the `preload` relation can be detected using the `supports()` method of the `relList` attribute.</p>
+    <pre class="example highlight">
+
+    var tokenListSupports = function(tokenList, token) {
+          if (!tokenList || !tokenList.supports) {
+              return false;
+          }
+          try {
+              return tokenList.supports(token);
+          } catch (e) {
+              if (e instanceof TypeError) {
+                console.log("The DOMTokenList doesn't have a supported tokens list");
+              } else {
+                console.error("That shouldn't have happened");
+              }
+          }
+    };
+
+    var linkSupportsPreload = tokenListSupports(document.createElement("link").relList, "preload"); // true
+    var classListSupportsWhatever = tokenListSupports(document.createElement("div").classList, "whatever"); // undefined + console.log
+    var linkSupportsWhatever = tokenListSupports(document.createElement("link").relList, "whatever"); // false
+</pre>
+</section>
+
+  <section>
     <h2>Security and Privacy</h2>
     <p class='issue'>TODO...</p>
   </section>
