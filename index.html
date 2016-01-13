@@ -282,14 +282,15 @@ document.head.appendChild(res);
 &lt;link rel="preload" href="https://fonts.example.com/font.woff" as="font" crossorigin&gt;
 </pre>
       <p>Above markup initiates four resource fetches: a font resource, a
-      stylesheet, an unknown resource type from another origin, and a font resource from another origin. Each fetch
-      is initialized with appropriate request headers and priority - the
-      unknown type is equivalent to a fetch initiated `XMLHttpRequest` request.
-      Further, these requests do not block the parser or the load event.</p>
-      <p class="note">Preload links for CORS enabled resources,
-      such as fonts or images with a `crossorigin` attribute,
-      must also include a `crossorigin` attribute,
-      in order for the resource to be properly used.</p>
+      stylesheet, an unknown resource type from another origin, and a font
+      resource from another origin. Each fetch is initialized with appropriate
+      request headers and priority - the unknown type is equivalent to a fetch
+      initiated `XMLHttpRequest` request. Further, these requests do not block
+      the parser or the load event.</p>
+      <p class="note">Preload links for CORS enabled resources, such as fonts
+      or images with a `crossorigin` attribute, must also include a
+      `crossorigin` attribute, in order for the resource to be properly
+      used.</p>
     </section>
     <section>
       <h2>Early fetch and application defined execution</h2>
@@ -394,6 +395,35 @@ document.head.appendChild(res);
         </li>
       </ul>
     </section>
+  </section>
+  <section id="privacy" class="informative">
+    <h2>Privacy and Security</h2>
+    <p>Preload is a declarative fetch primitive that initiates early fetch of
+    resources and separates fetching from resource execution. In effect, it is
+    conceptually similar to initiating a scripted fetch for a resource, but
+    with additional constraints and benefits:</p>
+    <ul>
+      <li>The resource declaration is visible via HTTP headers or HTML markup,
+      which allows the user agent to initiate the fetch earlier, and without
+      blocking on JavaScript execution.</li>
+      <li>The response is not executed and there is no callback to retrieve its
+      payload. The response is retrieved and executed by initiating another
+      fetch (via script, DOM element, etc) that matches the preloaded
+      response.</li>
+      <li>The developer can specify the target context that will consume the
+      response via `as` attribute, which allows the user agent to enforce the
+      relevant CSP policies when initiating the preload fetch. If `as` is
+      omitted, preload defaults to same security and privacy processing as a
+      call to `fetch()` - i.e. subject to `connect-src`.</li>
+    </ul>
+    <p>The site authors are encouraged to take the necessary precautions and
+    specify the relevant [[!CSP3]], [[!MIXED-CONTENT]], and
+    [[!REFERRER-POLICY]] rules, such that the browser can enforce them when
+    initiating the preload request. Additionally, if preload directives are
+    provided via the `Link` HTTP response header, then the relevant policies
+    should also be delivered as an HTTP response header - e.g. see <a href=
+    "https://w3c.github.io/webappsec/specs/content-security-policy/#complications">
+    Processing Complications</a> for CSP.</p>
   </section>
   <section class="appendix informative">
     <h2>Acknowledgments</h2>
