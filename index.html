@@ -123,6 +123,7 @@ document.head.appendChild(res);
     with [link] elements. This keyword creates an [external resource link]
     (<dfn>preload link</dfn>) that is used to declare a resource and its fetch
     properties. [[!HTML5]]</p>
+    <p class="note" title="feature detection">If preload keyword is used as an optimization to initiate earlier fetch then no additional feature detection checks are necessary: browsers that support preload will initiate earlier fetch, and those that do not will ignore it and fetch the resource as previously. Otherwise, if the application indents to rely on preload to fetch the resource, then it can [execute a feature detection check][feature-detect] to verify that it is supported.</p>
     <section>
       <h2>Processing</h2>
       <p>The <dfn>appropriate times</dfn> to <a>obtain the preload resource</a>
@@ -471,3 +472,4 @@ document.head.appendChild(res);
 [delay the load event]: https://html.spec.whatwg.org/multipage/syntax.html#delay-the-load-event
 [queue a task]: https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task
 [fire a simple event]: https://html.spec.whatwg.org/multipage/webappapis.html#fire-a-simple-event
+[feature-detect]: https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c
