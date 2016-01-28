@@ -257,6 +257,32 @@ document.head.appendChild(res);
       with the same context. This behavior is necessary to guarantee correct
       prioritization and request matching.</p>
     </section>
+    <section>
+      <h2>Server Push (HTTP/2)</h2>
+      <p>HTTP/2 ([[!RFC7540]]) allows a server to pre-emptively send ("push")
+      responses to the client. A pushed response is semantically equivalent to
+      a server responding to a request and, similar to a preloaded response, is
+      retained by the user agent and executed by the application when
+      <a data-lt="match a preloaded response">matched with another request</a>
+      initiated by the application. As such, from an application perspective,
+      there is no difference between consuming a preload or a server push
+      response.</p>
+      <p>The server MAY initiate server push for <a>preload link</a> resources
+      defined by the application for which it is [authoritative][]. Initiating
+      server push eliminates the request roundtrip between client and server
+      for the declared <a>preload link</a> resource.</p>
+      <p>Initiating server push for a <a>preload link</a> is an optional
+      optimization. For example, the server might omit initiating push if it
+      believes that the response is available in the client's cache: the client
+      will process the preload directive, check the relevant caches, and
+      initiate the request to the server if the resource is missing.
+      Alternatively, the server might omit initiating push due to operational
+      concerns, such as available server resources or other criteria. Finally,
+      the use of server push is subject to negotiated HTTP/2 connection
+      settings: the client may limit or outright disable the use of server
+      push. Applications cannot rely on the availability and use of server
+      push.</p>
+    </section>
   </section>
   <section id="conformance">
     <p>There is only one class of product that can claim conformance to this
@@ -475,3 +501,4 @@ document.head.appendChild(res);
 [queue a task]: https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task
 [fire a simple event]: https://html.spec.whatwg.org/multipage/webappapis.html#fire-a-simple-event
 [feature-detect]: https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c
+[authoritative]: https://httpwg.github.io/specs/rfc7540.html#authority
