@@ -279,7 +279,19 @@ document.head.appendChild(res);
       <p>The server MAY initiate server push for <a>preload link</a> resources
       defined by the application for which it is [authoritative][]. Initiating
       server push eliminates the request roundtrip between client and server
-      for the declared <a>preload link</a> resource.</p>
+      for the declared <a>preload link</a> resource. Optionally, if the use of
+      server push is not desired for a resource declared via the `Link` header
+      field ([[!RFC5988]]), the developer MAY provide an opt-out signal to the
+      server via the `nopush` target attribute ([[!RFC5988]] section 5.4). For
+      example:</p>
+      <pre class="example">
+  Link: &lt;/font.woff&gt;; rel=preload; as=font; nopush
+  Link: &lt;/app/script.js&gt;; rel=preload; as=script
+</pre>
+      <p class="note">The above example indicates to an HTTP/2 push capable
+      server that `/font.woff` should not be pushed (e.g. the origin may have
+      additional information indicating that it may already be in cache), while
+      `/app/script.js` should be considered as a candidate for server push.</p>
       <p>Initiating server push for a <a>preload link</a> is an optional
       optimization. For example, the server might omit initiating push if it
       believes that the response is available in the client's cache: the client
