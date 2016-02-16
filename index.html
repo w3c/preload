@@ -188,15 +188,16 @@ document.head.appendChild(res);
         <li>[Resolve] the [URL] (<i>absolute url</i>) given by the `href`
         attribute, relative to the element.</li>
         <li>If the previous step fails, then abort these steps.</li>
-        <li>Validate the <i>request destination</i> given by the `as` attribute. If
-        the attribute is omitted, or the provided value is not a [valid request
-        destination], then initialize it to the empty string. [[!FETCH]]</li>
+        <li>Validate the <i>request destination</i> given by the `as`
+        attribute. If the attribute is omitted, or the provided value is not a
+        [valid request destination], then initialize it to the empty string.
+        [[!FETCH]]</li>
         <li>Do a potentially CORS-enabled fetch of the resulting <i>absolute
         URL</i>, with the <i>mode</i> being the current state of the element's
         [crossorigin] content attribute, the <i>origin</i> being the [origin]
-        of the [link] element's [node document], <i>destination</i> set to <i>request
-        destination</i>, and the <i>default origin behavior</i> set to
-        <i>taint</i>.</li>
+        of the [link] element's [node document], <i>destination</i> set to
+        <i>request destination</i>, and the <i>default origin behavior</i> set
+        to <i>taint</i>.</li>
       </ol>
       <p>The <a>preload link</a> element MUST NOT [delay the load event] of the
       element's [node document].</p>
@@ -257,14 +258,85 @@ document.head.appendChild(res);
         <dd>
           The value of this element's <a href="#widl-HTMLLinkElement-as">as</a>
           attribute. The value of this attribute MUST be a [valid request
-          destination]. If the provided value is omitted, or invalid, the value should
-          be initialized to the empty string.
+          destination]. If the provided value is omitted, or invalid, the value
+          should be initialized to the empty string.
         </dd>
       </dl>
       <p>Request defaults set by the user agent via `as` attribute MUST match
       the default settings set by the user agent when processing a resource
       with the same context. This behavior is necessary to guarantee correct
       prioritization and request matching.</p>
+      <div class="example">
+        <p>Example directives to preload a resource that will be consumed
+        by...</p>
+        <table>
+          <thead>
+            <tr>
+              <th>consumer</th>
+              <th>Preload directive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>&lt;audio&gt;</code></td>
+              <td><code>&lt;link rel=preload as=audio href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>&lt;video&gt;</code></td>
+              <td><code>&lt;link rel=preload as=video href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>&lt;script&gt;</code>, Worker's
+              <em>importScripts</em></td>
+              <td><code>&lt;link rel=preload as=script href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td>
+                <code>&lt;link rel=stylesheet&gt;</code>, CSS <a href=
+                "https://github.com/import" class="user-mention">@import</a>
+              </td>
+              <td><code>&lt;link rel=preload as=style href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td>
+                CSS <a href="https://github.com/font-face" class=
+                "user-mention">@font-face</a>
+              </td>
+              <td><code>&lt;link rel=preload as=font href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>&lt;img&gt;</code>, <code>&lt;picture&gt;</code>,
+              srcset, imageset</td>
+              <td><code>&lt;link rel=preload as=image href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td>SVG's <code>&lt;image&gt;</code>, CSS *-image</td>
+              <td><code>&lt;link rel=preload as=image href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td>XHR, fetch</td>
+              <td><code>&lt;link rel=preload href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td>Worker, SharedWorker</td>
+              <td><code>&lt;link rel=preload as=worker href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>&lt;embed&gt;</code></td>
+              <td><code>&lt;link rel=preload as=embed href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>&lt;object&gt;</code></td>
+              <td><code>&lt;link rel=preload as=object href=...&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>&lt;iframe&gt;</code>, <code>&lt;frame&gt;</code></td>
+              <td><code>&lt;link rel=preload as=document
+              href=...&gt;</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
     <section>
       <h2>Server Push (HTTP/2)</h2>
