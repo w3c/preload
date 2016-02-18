@@ -189,8 +189,10 @@ document.head.appendChild(res);
         attribute, relative to the element.</li>
         <li>If the previous step fails, then abort these steps.</li>
         <li>Validate the <i>request destination</i> given by the `as`
-        attribute. If the attribute is omitted, or the provided value is not a
-        [valid request destination], then initialize it to the empty string.
+        attribute. If the attribute is omitted, then initialize it to the empty
+        string. If the provided value is not a [valid request destination], then
+        [queue a task] to [fire a simple event] named `error` at the [link]
+        element and abort these steps.</li>
         [[!FETCH]]</li>
         <li>Do a potentially CORS-enabled fetch of the resulting <i>absolute
         URL</i>, with the <i>mode</i> being the current state of the element's
