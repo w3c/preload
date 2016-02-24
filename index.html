@@ -160,15 +160,15 @@ document.head.appendChild(res);
         <a>preload link</a> that is already [in a Document] is set, changed, or
         removed.
         </li>
-        <li>When the `type` attribute of the [link] element of a <a>preload
+        <li>When the `as` attribute of the [link] element of a <a>preload
         link</a> that is already [in a Document] is set or changed to a value
-        that does not or no longer matches the [Content-Type metadata] of the
-        previous obtained external resource, if any.
+        that does not or no longer matches the <a>request destination</a> of
+        the previous obtained external resource, if any.
         </li>
-        <li>When the `type` attribute of the [link] element of a <a>preload
+        <li>When the `as` attribute of the [link] element of a <a>preload
         link</a> that is already [in a Document] but was previously not
-        obtained due to the `type` attribute specifying an unsupported type is
-        set, removed, or changed.
+        obtained due to the `as` attribute specifying an unsupported <a>request
+        destination</a> is set, removed, or changed.
         </li>
         <li>When the `media` attribute of the [link] element of a <a>preload
         link</a> that is already [in a Document] contains a [valid media query
@@ -188,11 +188,11 @@ document.head.appendChild(res);
         <li>[Resolve] the [URL] (<i>absolute url</i>) given by the `href`
         attribute, relative to the element.</li>
         <li>If the previous step fails, then abort these steps.</li>
-        <li>Validate the <i>request destination</i> given by the `as`
-        attribute. If the attribute is omitted, then initialize it to the empty
-        string. If the provided value is not a [valid request destination],
-        then [queue a task] to [fire a simple event] named `error` at the
-        [link] element and abort these steps.[[!FETCH]]</li>
+        <li>Validate the <i><dfn>request destination</dfn></i> given by the
+        `as` attribute. If the attribute is omitted, then initialize it to the
+        empty string. If the provided value is not a [valid request
+        destination], then [queue a task] to [fire a simple event] named
+        `error` at the [link] element and abort these steps.[[!FETCH]]</li>
         <li>Do a potentially CORS-enabled fetch of the resulting <i>absolute
         URL</i>, with the <i>mode</i> being the current state of the element's
         [crossorigin] content attribute, the <i>origin</i> being the [origin]
