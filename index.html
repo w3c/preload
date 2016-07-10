@@ -259,15 +259,14 @@ document.head.appendChild(res);
     </section>
     <section>
       <h2>Link element interface extensions</h2>
-      <dl title='partial interface HTMLLinkElement' class="idl">
-        <dt>[CEReactions] attribute DOMString as</dt>
-        <dd>
-          The value of this element's <a href="#widl-HTMLLinkElement-as">as</a>
-          attribute. The value of this attribute MUST be a [valid request
-          destination]. If the provided value is omitted, the value
-          should be initialized to the empty string.
-        </dd>
-      </dl>
+      <pre class="idl">
+partial interface HTMLLinkElement {
+  [CEReactions] attribute DOMString as;
+};
+</pre>
+      <p>The <dfn for="HTMLLinkElement">as</dfn> attribute's value MUST be a
+      [valid request destination]. If the provided value is omitted, the value
+      should be initialized to the empty string.</p>
       <p>Request defaults set by the user agent via `as` attribute MUST match
       the default settings set by the user agent when processing a resource
       with the same context. This behavior is necessary to guarantee correct
