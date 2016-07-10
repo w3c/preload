@@ -97,7 +97,7 @@
     <p>For example, the application can use the preload keyword to initiate
     early, high-priority, and non-render-blocking fetch of a CSS resource that
     can then be applied by the application at appropriate time:</p>
-    <pre class="example html">
+    <pre class="example html" title="Using markup">
 &lt;!-- preload stylesheet resource via declarative markup --&gt;
 &lt;link rel="preload" href="/styles/other.css" as="style"&gt;
 
@@ -110,7 +110,7 @@ res.href = "styles/other.css";
 document.head.appendChild(res);
 &lt;/script&gt;
 </pre>
-    <pre class="example nolinks http">
+    <pre class="example nolinks http" title="Using HTTP Header">
   Link: &lt;https://example.com/other/styles.css&gt;; rel=preload; as=style
 </pre>
     <p>As above examples illustrate, the resource can be specified via
@@ -400,7 +400,7 @@ document.head.appendChild(res);
       penalty. To address this, the application can use a <a>preload link</a>
       to declaratively specify which resources the user agent must fetch early
       to improve page performance:</p>
-      <pre class="example nolinks html">
+      <pre class="example nolinks html" title="Early fetch of critical resources">
 &lt;link rel="preload" href="/assets/font.woff2" as="font" type="font/woff2"&gt;
 &lt;link rel="preload" href="/style/other.css" as="style"&gt;
 &lt;link rel="preload" href="//example.com/resource"&gt;
