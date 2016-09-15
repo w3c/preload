@@ -468,13 +468,13 @@ partial interface HTMLLinkElement {
   Link: &lt;https://fonts.example.com/font.woff2&gt;; rel=preload; as=font; crossorigin; type='font/woff2'
 </pre>
       <pre class="example html">
-  &lt;link rel="preload" href="//example.com/widget.html" as="iframe"&gt;
+  &lt;link rel="preload" href="//example.com/widget.html" as="document"&gt;
 </pre>
       <pre class="example html">
   &lt;script&gt;
   var res = document.createElement("link");
   res.rel = "preload";
-  res.as = "iframe";
+  res.as = "document";
   res.href = "/other/widget.html";
   document.head.appendChild(res);
   &lt;/script&gt;
