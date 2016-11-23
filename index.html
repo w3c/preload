@@ -229,33 +229,25 @@ document.head.appendChild(res);
         <li>If the load was successful, [queue a task] to [fire a simple event]
         named `load` at the [link] element. Otherwise, [queue a task] to [fire
         a simple event] named `error` at the [link] element.</li>
-        <li>Add request to preload response cache (TODO).
-          <p class="issue">TODO: define preload "response cache". Conceptually
-          this should probably reuse [SW's cache
-          logic](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#cache-objects)?
-          In effect, the preload cache is a UA maintained response cache with a
-          few interesting lifetime + eviction quirks.</p>
+        <li>Add request to fetch group's response cache.
+          <div class="advisement">
+            <p>In addition to the HTTP cache, all browser implementations
+            provide one or more levels of additional caches, which sometimes
+            live before the HTTP cache (e.g. HTTP/2 server push responses are
+            typically not commited to HTTP cache until a client request is
+            made), and after the HTTP cache (e.g. in-process memory caches).
+            These caches are not defined today and need to be defined in Fetch
+            API— see [related
+            discussion](https://github.com/whatwg/fetch/issues/354).</p>
+            <p>Conceptually, a preloaded response should be committed to the
+            HTTP cache, as it is initiated by the client, and should also be
+            available in the memory cache and be re-usable at least once within
+            the lifetime of a fetch group.</p>
+          </div>
         </li>
       </ol>
       <p>The user agent MUST NOT automatically execute or apply the resource
-      against the current page context, and the user agent MUST retain the
-      fetched response until it is <a data-lt=
-      "match a preloaded response">matched with another request</a>, or is no
-      longer valid.</p>
-      <p>To <dfn>match a preloaded response</dfn>, the user agent must run the
-      following steps:</p>
-      <ul>
-        <li>...</li>
-        <li style="list-style: none; display: inline">
-          <p class="issue">TODO: define matching, see <a href=
-          "https://github.com/igrigorik/resource-hints/issues/5">this bug</a>
-          and <a href=
-          "https://groups.google.com/a/chromium.org/forum/#!msg/net-dev/cFhaIoJCRFg/3JX9lPWnDPIJ">
-          chromium discussion</a>. This should probably live in Fetch? I.e.
-          fetch requests should check this cache before checking browsers HTTP
-          cache and going to network.</p>
-        </li>
-      </ul>
+      against the current page context.</p>
       <p class="note">For example, if a JavaScript resource is fetched via a
       <a>preload link</a> and the response contains a `no-cache` directive, the
       fetched response is retained by the user agent and is made immediately
@@ -356,11 +348,10 @@ partial interface HTMLLinkElement {
       <p>HTTP/2 ([[!RFC7540]]) allows a server to pre-emptively send ("push")
       responses to the client. A pushed response is semantically equivalent to
       a server responding to a request and, similar to a preloaded response, is
-      retained by the user agent and executed by the application when
-      <a data-lt="match a preloaded response">matched with another request</a>
-      initiated by the application. As such, from an application perspective,
-      there is no difference between consuming a preload or a server push
-      response.</p>
+      retained by the user agent and executed by the application when matched
+      with a request initiated by the application. As such, from an application
+      perspective, there is no difference between consuming a preload or a
+      server push response.</p>
       <p>The server MAY initiate server push for <a>preload link</a> resources
       defined by the application for which it is [authoritative][]. Initiating
       server push eliminates the request roundtrip between client and server
@@ -411,7 +402,8 @@ partial interface HTMLLinkElement {
       penalty. To address this, the application can use a <a>preload link</a>
       to declaratively specify which resources the user agent must fetch early
       to improve page performance:</p>
-      <pre class="example nolinks html" title="Early fetch of critical resources">
+      <pre class="example nolinks html" title=
+      "Early fetch of critical resources">
 &lt;link rel="preload" href="/assets/font.woff2" as="font" type="font/woff2"&gt;
 &lt;link rel="preload" href="/style/other.css" as="style"&gt;
 &lt;link rel="preload" href="//example.com/resource"&gt;
