@@ -230,7 +230,7 @@ document.head.appendChild(res);
         named `load` at the [link] element. Otherwise, [queue a task] to [fire
         a simple event] named `error` at the [link] element.</li>
         <li>Add request to fetch group's response cache.
-          <div class="advisement">
+          <div class="note">
             <p>In addition to the HTTP cache, all browser implementations
             provide one or more levels of additional caches, which sometimes
             live before the HTTP cache (e.g. HTTP/2 server push responses are
@@ -239,10 +239,10 @@ document.head.appendChild(res);
             These caches are not defined today and need to be defined in Fetch
             API— see [related
             discussion](https://github.com/whatwg/fetch/issues/354).</p>
-            <p>Conceptually, a preloaded response should be committed to the
-            HTTP cache, as it is initiated by the client, and should also be
-            available in the memory cache and be re-usable at least once within
-            the lifetime of a fetch group.</p>
+            <p>Conceptually, a preloaded response ought to be committed to the
+            HTTP cache, as it is initiated by the client, and also be available
+            in the memory cache and be re-usable at least once within the
+            lifetime of a fetch group.</p>
           </div>
         </li>
       </ol>
