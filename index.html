@@ -180,14 +180,15 @@ document.head.appendChild(res);
         </li>
         <li>When the `type` attribute of the [link] element of a <a>preload
         link</a> that is already [in a Document] but was previously not
-        obtained due to the `type` attribute specifying an unsupported
+        obtained due to the `type` attribute not specifying a
+        [parsable MIME type] or specifying an [unsupported MIME type] for the
         <a>request destination</a> is set, removed, or changed.
         </li>
         <li>When the `media` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a Document] contains a [valid media query
-        list] that [matches the environment] of the user. Otherwise, if the
-        media query is invalid, or [evaluates to false][] [[!mediaqueries-4]],
-        the user agent SHOULD NOT obtain the resource.
+        link</a> that is already [in a Document] but was not previousely
+        obtained due the `media` attribute's value being not a
+        [valid media query list] or one that does not [match the environment] is set,
+        removed, or changed.
         </li>
       </ul>
       <p>The user agent SHOULD abort the current request if the `href`
@@ -196,16 +197,24 @@ document.head.appendChild(res);
       <p>To <dfn>obtain the preload resource</dfn>, the user agent must run the
       following steps:</p>
       <ol>
-        <li>If the `href` attribute's value is the empty string, then abort
-        these steps.</li>
+        <li>If the `href` attribute's value is missing or is the empty string,
+        then abort these steps.</li>
         <li>[Resolve] the [URL] (<i>absolute url</i>) given by the `href`
         attribute, relative to the element.</li>
         <li>If the previous step fails, then abort these steps.</li>
         <li>Validate the <i><dfn>request destination</dfn></i> given by the
         `as` attribute. If the attribute is omitted, then initialize it to the
         empty string. If the provided value is not a [valid request
-        destination], then [queue a task] to [fire a simple event] named
+        destination], then [queue a task] to [fire an event] named
         `error` at the [link] element and abort these steps.[[!FETCH]]</li>
+        <li>If the `type` attribute's value is missing or is the empty string,
+        then continue to the next step.
+        Otherwise, If the `type` attribute's value is not a [parsable MIME type]
+        or is an [unsupported MIME type], then abort these steps. </li>
+        <li>If the `media` attribute's value is missing or is the empty string,
+        then continue to the next step.
+        Otherwise, if the `media` attribute's value is not a [valid media query
+        list] that does [match the environment], then abort these steps.</li>
         <li>Do a potentially CORS-enabled fetch of the resulting <i>absolute
         URL</i>, with the <i>mode</i> being the current state of the element's
         [crossorigin] content attribute, the <i>origin</i> being the [origin]
@@ -226,7 +235,7 @@ document.head.appendChild(res);
       "obtain the preload resource">obtained</a></dfn>, the user agent must run
       these steps:</p>
       <ol>
-        <li>If the load was successful, [queue a task] to [fire a simple event]
+        <li>If the load was successful, [queue a task] to [fire an event]
         named `load` at the [link] element. Otherwise, [queue a task] to [fire
         a simple event] named `error` at the [link] element.</li>
         <li>Add request to fetch group's response cache.
@@ -588,8 +597,7 @@ partial interface HTMLLinkElement {
 [in a document]: https://html.spec.whatwg.org/multipage/infrastructure.html#in-a-document
 [Content-Type metadata]: https://html.spec.whatwg.org/multipage/infrastructure.html#content-type
 [valid media query list]: https://html.spec.whatwg.org/multipage/infrastructure.html#valid-media-query-list
-[matches the environment]: https://html.spec.whatwg.org/multipage/infrastructure.html#matches-the-environment
-[evaluates to false]: http://drafts.csswg.org/mediaqueries/#mq-list
+[match the environment]: https://html.spec.whatwg.org/multipage/infrastructure.html#matches-the-environment
 [resolve]: https://html.spec.whatwg.org/multipage/infrastructure.html#resolve-a-url
 [url]: https://html.spec.whatwg.org/multipage/infrastructure.html#url
 [request destination]: https://fetch.spec.whatwg.org/#concept-request-destination
@@ -600,6 +608,8 @@ partial interface HTMLLinkElement {
 [node document]: https://dom.spec.whatwg.org/#concept-node-document
 [delay the load event]: https://html.spec.whatwg.org/multipage/syntax.html#delay-the-load-event
 [queue a task]: https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task
-[fire a simple event]: https://html.spec.whatwg.org/multipage/webappapis.html#fire-a-simple-event
+[fire an event]: https://dom.spec.whatwg.org/#concept-event-fire
 [feature-detect]: https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c
 [authoritative]: https://httpwg.github.io/specs/rfc7540.html#authority
+[unsupported MIME type]: https://mimesniff.spec.whatwg.org/#supported-by-the-user-agent
+[parsable MIME type]: https://mimesniff.spec.whatwg.org/#parsable-mime-type
