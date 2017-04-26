@@ -4,8 +4,7 @@
   <title>Preload</title>
   <meta charset='utf-8'>
   <script src='https://www.w3.org/Tools/respec/respec-w3c-common' async class=
-  'remove'>
-  </script>
+  'remove'></script>
   <script class='remove'>
   var respecConfig = {
     shortName: "preload",
@@ -131,7 +130,7 @@ document.head.appendChild(res);
     <p>The <dfn data-lt="preload keyword">preload</dfn> keyword may be used
     with [link] elements. This keyword creates an [external resource link]
     (<dfn>preload link</dfn>) that is used to declare a resource and its fetch
-    properties. [[!HTML5]]</p>
+    properties. [[!HTML]]</p>
     <p class="note" title="feature detection">If the preload keyword is used as
     an optimization to initiate earlier fetch then no additional feature
     detection checks are necessary: browsers that support preload will initiate
@@ -149,8 +148,7 @@ document.head.appendChild(res);
     contention and optimize load performance.</p>
     <section>
       <h2>Processing</h2>
-      <p>The <dfn>appropriate times</dfn> to <a>obtain the preload resource</a>
-      are:</p>
+      <p>The <dfn>appropriate times</dfn> to [obtain the resource] are:</p>
       <ul>
         <li>When the user agent that supports [[!RFC5988]] processes `Link`
         header that contains a <a>preload link</a>.
@@ -159,85 +157,51 @@ document.head.appendChild(res);
         document].
         </li>
         <li>When the <a>preload link</a> is created on a [link] element that is
-        already [in a Document].
+        already [in a document tree].
         </li>
         <li>When the `href` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a Document] is changed.
+        link</a> that is already [in a document tree] is changed.
         </li>
         <li>When the `crossorigin` attribute of the [link] element of a
-        <a>preload link</a> that is already [in a Document] is set, changed, or
-        removed.
+        <a>preload link</a> that is already [in a document tree] is set,
+        changed, or removed.
         </li>
         <li>When the `as` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a Document] is set or changed to a value
-        that does not or no longer matches the <a>request destination</a> of
+        link</a> that is already [in a document tree] is set or changed to a
+        value that does not or no longer matches the [request destination] of
         the previous obtained external resource, if any.
         </li>
         <li>When the `as` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a Document] but was previously not
-        obtained due to the `as` attribute specifying an unsupported <a>request
-        destination</a> is set, removed, or changed.
+        link</a> that is already [in a document tree] but was previously not
+        obtained due to the `as` attribute specifying an unsupported [request
+        destination] is set, removed, or changed.
         </li>
         <li>When the `type` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a Document] but was previously not
-        obtained due to the `type` attribute not specifying a
-        [parsable MIME type] or specifying an [unsupported MIME type] for the
-        <a>request destination</a> is set, removed, or changed.
+        link</a> that is already [in a document tree] but was previously not
+        obtained due to the `type` attribute not specifying a [parsable MIME
+        type] or specifying an [unsupported MIME type] for the [request
+        destination] is set, removed, or changed.
         </li>
         <li>When the `media` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a Document] but was not previously
-        obtained due the `media` attribute's value being not a
-        [valid media query list] or one that does not [match the environment] is set,
+        link</a> that is already [in a document tree] but was not previously
+        obtained due the `media` attribute's value being not a [valid media
+        query list] or one that does not [match the environment] is set,
         removed, or changed.
         </li>
       </ul>
       <p>The user agent SHOULD abort the current request if the `href`
       attribute of the [link] element of a <a>preload link</a> is changed,
       removed, or its value is set to an empty string.</p>
-      <p>To <dfn>obtain the preload resource</dfn>, the user agent must run the
-      following steps:</p>
+      <p>At these times, the user agent must [obtain the resource] given by the
+      link element.</p>
+      <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
+      [delay the load event] of the element's [node document].</p>
+      <p>Once a <dfn>preload resource has been obtained</dfn>, the user agent
+      must run these steps:</p>
       <ol>
-        <li>If the `href` attribute's value is missing or is the empty string,
-        then abort these steps.</li>
-        <li>[Resolve] the [URL] (<i>absolute url</i>) given by the `href`
-        attribute, relative to the element.</li>
-        <li>If the previous step fails, then abort these steps.</li>
-        <li>Validate the <i><dfn>request destination</dfn></i> given by the
-        `as` attribute. If the attribute is omitted, then initialize it to the
-        empty string. If the provided value is not a [valid request
-        destination], then [queue a task] to [fire an event] named
-        `error` at the [link] element and abort these steps.[[!FETCH]]</li>
-        <li>If the `type` attribute's value is missing or is the empty string,
-        then continue to the next step.
-        Otherwise, If the `type` attribute's value is not a [parsable MIME type]
-        or is an [unsupported MIME type], then abort these steps. </li>
-        <li>If the `media` attribute's value is missing or is the empty string,
-        then continue to the next step.
-        Otherwise, if the `media` attribute's value is not a [valid media query
-        list] that does [match the environment], then abort these steps.</li>
-        <li>Do a potentially CORS-enabled fetch of the resulting <i>absolute
-        URL</i>, with the <i>mode</i> being the current state of the element's
-        [crossorigin] content attribute, the <i>origin</i> being the [origin]
-        of the [link] element's [node document], <i>destination</i> set to
-        <i>request destination</i>, and the <i>default origin behavior</i> set
-        to <i>taint</i>.</li>
-      </ol>
-      <p>The <a>preload link</a> element MUST NOT [delay the load event] of the
-      element's [node document].</p>
-      <p class="note">The fetch initiated by a <a>preload link</a> is subject
-      to relevant CSP policies determined by the value of the `as` attribute -
-      e.g. when set to `image` the fetch is subject to `image-src`. Similarly,
-      the value of the `as` attribute is used to initialize request headers and
-      priority. If the `as` attribute is omitted, the request will be
-      initialized with similar processing and request properties as one
-      initiated by `XMLHttpRequest`.</p>
-      <p>Once a <dfn>preload resource has been <a data-lt=
-      "obtain the preload resource">obtained</a></dfn>, the user agent must run
-      these steps:</p>
-      <ol>
-        <li>If the load was successful, [queue a task] to [fire an event]
-        named `load` at the [link] element. Otherwise, [queue a task] to [fire
-        a simple event] named `error` at the [link] element.</li>
+        <li>If the load was successful, [queue a task] to [fire an event] named
+        `load` at the [link] element. Otherwise, [queue a task] to [fire an
+        event] named `error` at the [link] element.</li>
         <li>Add request to fetch group's response cache.
           <div class="note">
             <p>In addition to the HTTP cache, all browser implementations
@@ -267,20 +231,14 @@ document.head.appendChild(res);
       link and a later fetch requesting the same resource.</p>
     </section>
     <section>
-      <h2>Link element interface extensions</h2>
-      <pre class="idl">
-partial interface HTMLLinkElement {
-  [CEReactions] attribute DOMString as;
-};
-</pre>
-      <p>The <dfn for="HTMLLinkElement">as</dfn> attribute's value MUST be a
-      valid [request destination]. If the provided value is omitted, the value
-      is initialized to the empty string.</p>
-      <p>The user agent MUST set the [request destination] provided by `as`, as
-      well as the corresponding [request type] and [request initiator]. This is
-      necessary to guarantee correct prioritization, request matching,
-      application of the correct [[!CSP3]] policy, and setting of the
-      appropriate `Accept` request header.</p>
+      <h2>`link` element extensions</h2>
+      <p>[[!HTML]] defines the `as` content and IDL attributes. The state of
+      the `as` content attribute is taken into account in the above processing
+      model, which will set the [request destination] as well as the
+      corresponding [request type] and [request initiator]. This is necessary
+      to guarantee correct prioritization, request matching, application of the
+      correct [[!CSP3]] policy, and setting of the appropriate `Accept` request
+      header.</p>
       <p>When the resource is declared via the `Link` header field
       ([[!RFC5988]]), the resource's `as` attribute is defined via the `as`
       link-extension target attribute. ([[!RFC5988]] section 5.4)</p>
@@ -593,8 +551,8 @@ partial interface HTMLLinkElement {
 <!-- spec references. preserve before running tidy! -->
 [link]: https://html.spec.whatwg.org/multipage/semantics.html#the-link-element
 [external resource link]: https://html.spec.whatwg.org/multipage/semantics.html#external-resource-link
-[inserted into a document]: https://www.w3.org/TR/html51/infrastructure.html#document-inserted-into-the-document
-[in a document]: https://html.spec.whatwg.org/multipage/infrastructure.html#in-a-document
+[inserted into a document]: https://html.spec.whatwg.org/multipage/infrastructure.html#insert-an-element-into-a-document
+[in a document tree]: https://dom.spec.whatwg.org/#in-a-document-tree
 [Content-Type metadata]: https://html.spec.whatwg.org/multipage/infrastructure.html#content-type
 [valid media query list]: https://html.spec.whatwg.org/multipage/infrastructure.html#valid-media-query-list
 [match the environment]: https://html.spec.whatwg.org/multipage/infrastructure.html#matches-the-environment
@@ -613,3 +571,4 @@ partial interface HTMLLinkElement {
 [authoritative]: https://httpwg.github.io/specs/rfc7540.html#authority
 [unsupported MIME type]: https://mimesniff.spec.whatwg.org/#supported-by-the-user-agent
 [parsable MIME type]: https://mimesniff.spec.whatwg.org/#parsable-mime-type
+[obtain the resource]: https://html.spec.whatwg.org/multipage/semantics.html#concept-link-obtain
