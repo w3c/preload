@@ -197,28 +197,20 @@ document.head.appendChild(res);
       <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
       [delay the load event] of the element's [node document].</p>
       <p>Once a <dfn>preload resource has been obtained</dfn>, the user agent
-      must run these steps:</p>
-      <ol>
-        <li>If the load was successful, [queue a task] to [fire an event] named
-        `load` at the [link] element. Otherwise, [queue a task] to [fire an
-        event] named `error` at the [link] element.</li>
-        <li>Add request to fetch group's response cache.
-          <div class="note">
-            <p>In addition to the HTTP cache, all browser implementations
-            provide one or more levels of additional caches, which sometimes
-            live before the HTTP cache (e.g. HTTP/2 server push responses are
-            typically not committed to HTTP cache until a client request is
-            made), and after the HTTP cache (e.g. in-process memory caches).
-            These caches are not defined today and need to be defined in Fetch
-            API— see [related
-            discussion](https://github.com/whatwg/fetch/issues/354).</p>
-            <p>Conceptually, a preloaded response ought to be committed to the
-            HTTP cache, as it is initiated by the client, and also be available
-            in the memory cache and be re-usable at least once within the
-            lifetime of a fetch group.</p>
-          </div>
-        </li>
-      </ol>
+      must add request to fetch group's response cache.</p>
+      <div class="note">
+        <p>In addition to the HTTP cache, all browser implementations provide
+        one or more levels of additional caches, which sometimes live before
+        the HTTP cache (e.g. HTTP/2 server push responses are typically not
+        committed to HTTP cache until a client request is made), and after the
+        HTTP cache (e.g. in-process memory caches). These caches are not
+        defined today and need to be defined in Fetch API— see [related
+        discussion](https://github.com/whatwg/fetch/issues/354).</p>
+        <p>Conceptually, a preloaded response ought to be committed to the HTTP
+        cache, as it is initiated by the client, and also be available in the
+        memory cache and be re-usable at least once within the lifetime of a
+        fetch group.</p>
+      </div>
       <p>The user agent MUST NOT automatically execute or apply the resource
       against the current page context.</p>
       <p class="note">For example, if a JavaScript resource is fetched via a
