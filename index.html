@@ -9,7 +9,6 @@
   var respecConfig = {
     shortName: "preload",
     specStatus: "ED",
-    useExperimentalStyles: true,
     edDraftURI: "https://w3c.github.io/preload/",
     editors: [{
       name: "Ilya Grigorik",
@@ -34,19 +33,7 @@
     format: "markdown",
     // noLegacyStyle: true,
     testSuiteURI: "https://github.com/w3c/web-platform-tests/tree/master/preload",
-    otherLinks: [{
-      key: 'Repository',
-      data: [{
-        value: 'We are on Github.',
-        href: 'https://github.com/w3c/preload/'
-      }, {
-        value: 'File a bug.',
-        href: 'https://github.com/w3c/preload/issues'
-      }, {
-        value: 'Commit history.',
-        href: 'https://github.com/w3c/preload/commits/gh-pages/index.html'
-      }]
-    }],
+    github: "https://github.com/w3c/preload/",
     wgPatentURI: "https://www.w3.org/2004/01/pp-impl/45211/status"
   };
   </script>
@@ -250,7 +237,6 @@ document.head.appendChild(res);
               <td><code>&lt;audio&gt;</code></td>
               <td><code>&lt;link rel=preload as=audio href=...&gt;</code></td>
             </tr>
-            <tr>
             <tr>
               <td><code>&lt;video&gt;</code></td>
               <td><code>&lt;link rel=preload as=video href=...&gt;</code></td>
