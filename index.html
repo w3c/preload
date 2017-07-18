@@ -153,8 +153,8 @@ document.head.appendChild(res);
     detection checks are necessary: browsers that support preload will initiate
     earlier fetch, and those that do not will ignore it and fetch the resource
     as previously. Otherwise, if the application intends to rely on preload to
-    fetch the resource, then it can [execute a feature detection
-    check][feature-detect] to verify that it is supported.</p>
+    fetch the resource, then it can <a href="https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c">execute a feature detection
+    check</a> to verify that it is supported.</p>
     <p class="note" title="relationship to prefetch">Both <a>prefetch</a> and `preload` declare a resource and its fetch
     properties, but differ in how and when the resource is fetched by the user
     agent: <a>prefetch</a> is an optional and low-priority fetch for a resource that
@@ -336,7 +336,7 @@ document.head.appendChild(res);
       perspective, there is no difference between consuming a preload or a
       server push response.</p>
       <p>The server MAY initiate server push for <a>preload link</a> resources
-      defined by the application for which it is [authoritative][]. Initiating
+      defined by the application for which it is <a href="https://httpwg.github.io/specs/rfc7540.html#authority">authoritative</a>. Initiating
       server push eliminates the request roundtrip between client and server
       for the declared <a>preload link</a> resource. Optionally, if the use of
       server push is not desired for a resource declared via the `Link` header
@@ -563,7 +563,3 @@ document.head.appendChild(res);
   </section>
 </body>
 </html>
-
-<!-- spec references. preserve before running tidy! -->
-[feature-detect]: https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c
-[authoritative]: https://httpwg.github.io/specs/rfc7540.html#authority
