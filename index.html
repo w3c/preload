@@ -41,7 +41,7 @@
 <body>
   <section id='abstract'>
     <p>This specification defines the <a>preload</a> keyword that may be used
-    with [link] elements. This keyword provides a declarative fetch primitive
+    with <a>link</a> elements. This keyword provides a declarative fetch primitive
     that initiates an early fetch and separates fetching from resource
     execution.</p>
   </section>
@@ -55,6 +55,35 @@
     document before it eventually reaches the Candidate Recommendation stage
     SHOULD join the mailing lists below and take part in the discussions.</p>
   </section>
+  <section>
+      <h2>
+        Dependencies
+      </h2>
+      <p>
+        The terms <dfn data-cite="HTML#the-link-element">link</dfn>, 
+        <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>, 
+        <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
+        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn> and <dfn data-cite="HTML#concept-link-obtain">obtain the resource</dfn> are defined in [[!HTML]].
+      </p>
+      <p>
+        The terms <dfn data-cite="HTML52#match-the-environment">match the environment</dfn> 
+        are defined in [[!HTML52]].
+      </p>
+      <p>
+        The terms <dfn data-cite="DOM#concept-document-content-type">Content-Type metadata</dfn>, <dfn data-cite="DOM#concept-event-fire">fire an event</dfn> , <dfn data-cite="DOM#in-a-document-tree">in a document tree</dfn> and <dfn data-cite="DOM#concept-node-document">node document</dfn>
+        are defined in [[!DOM]].
+      </p>
+      <p>
+        The terms <dfn data-cite="FETCH#concept-request-destination">request destination</dfn>, <dfn data-cite="FETCH#concept-request-initiator">request initiator</dfn> and <dfn data-cite="FETCH#concept-request-type">request type</dfn>
+        are defined in [[!FETCH]].
+      </p>
+      <p>
+        The terms <dfn data-cite="MIMESNIFF#parsable-mime-type">parsable MIME type</dfn> and <dfn data-cite="MIMESNIFF#supported-by-the-user-agent">unsupported MIME type</dfn> are defined in [[!MIMESNIFF]].
+      </p>
+      <p>
+        The term <code><dfn data-cite="RESOURCE-HINTS#dfn-prefetch">prefetch</dfn></code> is defined in [[RESOURCE-HINTS]].
+      </p>
+    </section>
   <section>
     <h2>Introduction</h2>
     <p>Many applications require fine-grained control over when resources are
@@ -82,7 +111,7 @@
       abundance of blocking scripts on most pages introduces significant delays
       and affects application performance.</li>
     </ul>
-    <p>The <a>preload</a> keyword on [link] elements provides a declarative
+    <p>The <a>preload</a> keyword on <a>link</a> elements provides a declarative
     fetch primitive that addresses the above use case of initiating an early
     fetch and separating fetching from resource execution. As such,
     <a>preload</a> keyword serves as a low-level primitive that enables
@@ -116,74 +145,73 @@ document.head.appendChild(res);
   <section id="link-type-preload">
     <h2 id="x2.link-type-preload">Link type "<code>preload</code>"</h2>
     <p>The <dfn data-lt="preload keyword">preload</dfn> keyword may be used
-    with [link] elements. This keyword creates an [external resource link]
+    with <a>link</a> elements. This keyword creates an <a>external resource link</a>
     (<dfn>preload link</dfn>) that is used to declare a resource and its fetch
-    properties. [[!HTML]]</p>
+    properties.</p>
     <p class="note" title="feature detection">If the preload keyword is used as
     an optimization to initiate earlier fetch then no additional feature
     detection checks are necessary: browsers that support preload will initiate
     earlier fetch, and those that do not will ignore it and fetch the resource
     as previously. Otherwise, if the application intends to rely on preload to
-    fetch the resource, then it can [execute a feature detection
-    check][feature-detect] to verify that it is supported.</p>
-    <p class="note" title="relationship to prefetch">Both `prefetch`
-    ([[RESOURCE-HINTS]]) and `preload` declare a resource and its fetch
+    fetch the resource, then it can <a href="https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c">execute a feature detection
+    check</a> to verify that it is supported.</p>
+    <p class="note" title="relationship to prefetch">Both <a>prefetch</a> and `preload` declare a resource and its fetch
     properties, but differ in how and when the resource is fetched by the user
-    agent: `prefetch` is an optional and low-priority fetch for a resource that
+    agent: <a>prefetch</a> is an optional and low-priority fetch for a resource that
     might be used by a subsequent navigation; `preload` is a mandatory and
     high-priority fetch for a resource that is necessary for the current
     navigation. Developers should use each one accordingly to minimize resource
     contention and optimize load performance.</p>
     <section>
       <h2>Processing</h2>
-      <p>The <dfn>appropriate times</dfn> to [obtain the resource] are:</p>
+      <p>The <dfn>appropriate times</dfn> to <a>obtain the resource</a> are:</p>
       <ul>
         <li>When the user agent that supports [[!RFC5988]] processes `Link`
         header that contains a <a>preload link</a>.
         </li>
-        <li>When the <a>preload link</a>'s [link] element is [inserted into a
-        document].
+        <li>When the <a>preload link</a>'s <a>link</a> element is <a>inserted into a
+        document</a>.
         </li>
-        <li>When the <a>preload link</a> is created on a [link] element that is
-        already [in a document tree].
+        <li>When the <a>preload link</a> is created on a <a>link</a> element that is
+        already <a>in a document tree</a>.
         </li>
-        <li>When the `href` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a document tree] is changed.
+        <li>When the `href` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> is changed.
         </li>
-        <li>When the `crossorigin` attribute of the [link] element of a
-        <a>preload link</a> that is already [in a document tree] is set,
+        <li>When the `crossorigin` attribute of the <a>link</a> element of a
+        <a>preload link</a> that is already <a>in a document tree</a> is set,
         changed, or removed.
         </li>
-        <li>When the `as` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a document tree] is set or changed to a
-        value that does not or no longer matches the [request destination] of
+        <li>When the `as` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> is set or changed to a
+        value that does not or no longer matches the <a>request destination</a> of
         the previous obtained external resource, if any.
         </li>
-        <li>When the `as` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a document tree] but was previously not
-        obtained due to the `as` attribute specifying an unsupported [request
-        destination] is set, removed, or changed.
+        <li>When the `as` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> but was previously not
+        obtained due to the `as` attribute specifying an unsupported <a>request
+        destination</a> is set, removed, or changed.
         </li>
-        <li>When the `type` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a document tree] but was previously not
-        obtained due to the `type` attribute not specifying a [parsable MIME
-        type] or specifying an [unsupported MIME type] for the [request
-        destination] is set, removed, or changed.
+        <li>When the `type` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> but was previously not
+        obtained due to the `type` attribute not specifying a <a>parsable MIME
+        type</a> or specifying an <a>unsupported MIME type</a> for the <a>request
+        destination</a> is set, removed, or changed.
         </li>
-        <li>When the `media` attribute of the [link] element of a <a>preload
-        link</a> that is already [in a document tree] but was not previously
-        obtained due the `media` attribute's value being not a [valid media
-        query list] or one that does not [match the environment] is set,
+        <li>When the `media` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> but was not previously
+        obtained due the `media` attribute's value being not a <a>valid media
+        query list</a> or one that does not <a>match the environment</a> is set,
         removed, or changed.
         </li>
       </ul>
       <p>The user agent SHOULD abort the current request if the `href`
-      attribute of the [link] element of a <a>preload link</a> is changed,
+      attribute of the <a>link</a> element of a <a>preload link</a> is changed,
       removed, or its value is set to an empty string.</p>
-      <p>At these times, the user agent must [obtain the resource] given by the
+      <p>At these times, the user agent must <a>obtain the resource</a> given by the
       link element.</p>
       <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
-      [delay the load event] of the element's [node document].</p>
+      <a>delay the load event</a> of the element's <a>node document</a>.</p>
       <p>Once a <dfn>preload resource has been obtained</dfn>, the user agent
       must add request to fetch group's response cache.</p>
       <div class="note">
@@ -214,8 +242,8 @@ document.head.appendChild(res);
       <h2>`link` element extensions</h2>
       <p>[[!HTML]] defines the `as` content and IDL attributes. The state of
       the `as` content attribute is taken into account in the above processing
-      model, which will set the [request destination] as well as the
-      corresponding [request type] and [request initiator]. This is necessary
+      model, which will set the <a>request destination</a> as well as the
+      corresponding <a>request type</a> and <a>request initiator</a>. This is necessary
       to guarantee correct prioritization, request matching, application of the
       correct [[!CSP3]] policy, and setting of the appropriate `Accept` request
       header.</p>
@@ -308,7 +336,7 @@ document.head.appendChild(res);
       perspective, there is no difference between consuming a preload or a
       server push response.</p>
       <p>The server MAY initiate server push for <a>preload link</a> resources
-      defined by the application for which it is [authoritative][]. Initiating
+      defined by the application for which it is <a href="https://httpwg.github.io/specs/rfc7540.html#authority">authoritative</a>. Initiating
       server push eliminates the request roundtrip between client and server
       for the declared <a>preload link</a> resource. Optionally, if the use of
       server push is not desired for a resource declared via the `Link` header
@@ -535,28 +563,3 @@ document.head.appendChild(res);
   </section>
 </body>
 </html>
-
-<!-- spec references. preserve before running tidy! -->
-[link]: https://html.spec.whatwg.org/multipage/semantics.html#the-link-element
-[external resource link]: https://html.spec.whatwg.org/multipage/semantics.html#external-resource-link
-[inserted into a document]: https://html.spec.whatwg.org/multipage/infrastructure.html#insert-an-element-into-a-document
-[in a document tree]: https://dom.spec.whatwg.org/#in-a-document-tree
-[Content-Type metadata]: https://html.spec.whatwg.org/multipage/infrastructure.html#content-type
-[valid media query list]: https://html.spec.whatwg.org/multipage/infrastructure.html#valid-media-query-list
-[match the environment]: https://html.spec.whatwg.org/multipage/infrastructure.html#matches-the-environment
-[resolve]: https://html.spec.whatwg.org/multipage/infrastructure.html#resolve-a-url
-[url]: https://html.spec.whatwg.org/multipage/infrastructure.html#url
-[request destination]: https://fetch.spec.whatwg.org/#concept-request-destination
-[request type]: https://fetch.spec.whatwg.org/#concept-request-type
-[request initiator]: https://fetch.spec.whatwg.org/#concept-request-initiator
-[crossorigin]: https://html.spec.whatwg.org/multipage/semantics.html#attr-link-crossorigin
-[origin]: https://html.spec.whatwg.org/multipage/browsers.html#origin-2
-[node document]: https://dom.spec.whatwg.org/#concept-node-document
-[delay the load event]: https://html.spec.whatwg.org/multipage/syntax.html#delay-the-load-event
-[queue a task]: https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-task
-[fire an event]: https://dom.spec.whatwg.org/#concept-event-fire
-[feature-detect]: https://gist.github.com/igrigorik/a02f2359f3bc50ca7a9c
-[authoritative]: https://httpwg.github.io/specs/rfc7540.html#authority
-[unsupported MIME type]: https://mimesniff.spec.whatwg.org/#supported-by-the-user-agent
-[parsable MIME type]: https://mimesniff.spec.whatwg.org/#parsable-mime-type
-[obtain the resource]: https://html.spec.whatwg.org/multipage/semantics.html#concept-link-obtain
