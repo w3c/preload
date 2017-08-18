@@ -227,6 +227,10 @@ document.head.appendChild(res);
         memory cache and be re-usable at least once within the lifetime of a
         fetch group.</p>
       </div>
+      <div class="note">
+        Link HTTP header should trigger preloads on responses to navigational
+        requests as well as on responses to subresource requests.
+      </div>
       <p>The user agent MUST NOT automatically execute or apply the resource
       against the current page context.</p>
       <p class="note">For example, if a JavaScript resource is fetched via a
