@@ -239,13 +239,11 @@ document.head.appendChild(res);
       link and a later fetch requesting the same resource.</p>
     </section>
     <section>
-      <h2>`link` element extensions</h2>
-      <p>[[!HTML]] defines the `as` content and IDL attributes. The state of
-      the `as` content attribute is taken into account in the above processing
-      model, which will set the <a>request destination</a> as well as the
-      corresponding <a>request type</a> and <a>request initiator</a>. This is necessary
-      to guarantee correct prioritization, request matching, application of the
-      correct [[!CSP3]] policy, and setting of the appropriate `Accept` request
+      <h2>`as` attribute</h2>
+      <p class=note>[[!HTML]] [defines](https://html.spec.whatwg.org/#attr-link-as) the
+      `as` content and IDL attributes. The attribute is necessary to guarantee
+      correct prioritization, request matching, application of the correct
+      [[!CSP3]] policy, and setting of the appropriate `Accept` request
       header.</p>
       <p>When the resource is declared via the `Link` header field
       ([[!RFC5988]]), the resource's `as` attribute is defined via the `as`
