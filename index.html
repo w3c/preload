@@ -70,8 +70,9 @@
         are defined in [[!HTML52]].
       </p>
       <p>
-        The terms <dfn data-cite="DOM#concept-document-content-type">Content-Type metadata</dfn>, <dfn data-cite="DOM#concept-event-fire">fire an event</dfn> , <dfn data-cite="DOM#in-a-document-tree">in a document tree</dfn> and <dfn data-cite="DOM#concept-node-document">node document</dfn>
-        are defined in [[!DOM]].
+        The terms <dfn data-cite="DOM#concept-document">Document</dfn>, <dfn data-cite="DOM#concept-document-content-type">Content-Type metadata</dfn>,
+        <dfn data-cite="DOM#concept-event-fire">fire an event</dfn> , <dfn data-cite="DOM#in-a-document-tree">in a document tree</dfn> and
+        <dfn data-cite="DOM#concept-node-document">node document</dfn> are defined in [[!DOM]].
       </p>
       <p>
         The term <dfn data-cite="FETCH#concept-request-destination">request destination</dfn> is defined in [[!FETCH]].
@@ -165,8 +166,8 @@ document.head.appendChild(res);
       <h2>Processing</h2>
       <p>The <dfn>appropriate times</dfn> to <a>obtain the resource</a> are:</p>
       <ul>
-        <li>When the user agent that supports [[!RFC5988]] processes `Link`
-        header that contains a <a>preload link</a>.
+        <li>When the user agent that supports [[!RFC5988]] creates a <a>Document</a>
+        and processes `Link` headers that contain a <a>preload link</a>.
         </li>
         <li>When the <a>preload link</a>'s <a>link</a> element is <a>inserted into a
         document</a>.
