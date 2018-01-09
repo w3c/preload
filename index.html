@@ -230,6 +230,10 @@ document.head.appendChild(res);
       <div class="note">
         Link HTTP response header should be processed for all types of <a>request destination</a>.
       </div>
+      <div class="note">
+        When the `media` attribute's value does not <a>match the environment</a>,
+        the resource will not be preloaded.
+      </div>
       <p>The user agent MUST NOT automatically execute or apply the resource
       against the current page context.</p>
       <p class="note">For example, if a JavaScript resource is fetched via a
