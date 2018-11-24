@@ -64,11 +64,8 @@
         The terms <dfn data-cite="HTML#the-link-element">link</dfn>, 
         <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>, 
         <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
+        <dfn data-cite="HTML#matches-the-environment">matches the environment</dfn>,
         <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn> and <dfn data-cite="HTML#concept-link-obtain">obtain the resource</dfn> are defined in [[!HTML]].
-      </p>
-      <p>
-        The terms <dfn data-cite="HTML52#match-the-environment">match the environment</dfn> 
-        are defined in [[!HTML52]].
       </p>
       <p>
         The terms <dfn data-cite="DOM#concept-document">Document</dfn>, <dfn data-cite="DOM#concept-document-content-type">Content-Type metadata</dfn>,
@@ -179,6 +176,12 @@ document.head.appendChild(res);
         <li>When the `href` attribute of the <a>link</a> element of a <a>preload
         link</a> that is already <a>in a document tree</a> is changed.
         </li>
+        <li>When the `imagesrcset` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> is set, changed, or removed.
+        </li>
+        <li>When the `imagesizes` attribute of the <a>link</a> element of a <a>preload
+        link</a> that is already <a>in a document tree</a> is set, changed, or removed.
+        </li>
         <li>When the `crossorigin` attribute of the <a>link</a> element of a
         <a>preload link</a> that is already <a>in a document tree</a> is set,
         changed, or removed.
@@ -202,8 +205,8 @@ document.head.appendChild(res);
         <li>When the `media` attribute of the <a>link</a> element of a <a>preload
         link</a> that is already <a>in a document tree</a> but was not previously
         obtained due the `media` attribute's value being not a <a>valid media
-        query list</a> or one that does not <a>match the environment</a> is set,
-        removed, or changed.
+        query list</a> or one that does not <a data-lt="matches the environment">match
+        the environment</a> is set, removed, or changed.
         </li>
       </ul>
       <p>The user agent SHOULD abort the current request if the `href`
@@ -232,8 +235,8 @@ document.head.appendChild(res);
         Link HTTP response header should be processed for all types of <a>request destination</a>.
       </div>
       <div class="note">
-        When the `media` attribute's value does not <a>match the environment</a>,
-        the resource will not be preloaded.
+        When the `media` attribute's value does not <a data-lt="matches the environment">match
+        the environment</a>, the resource will not be preloaded.
       </div>
       <p>The user agent MUST NOT automatically execute or apply the resource
       against the current page context.</p>
