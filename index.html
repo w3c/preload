@@ -65,7 +65,7 @@
         <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>, 
         <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
         <dfn data-cite="HTML#matches-the-environment">matches the environment</dfn>,
-        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn> and <dfn data-cite="HTML#concept-link-obtain">obtain the resource</dfn> are defined in [[!HTML]].
+        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn> and <dfn data-cite="HTML#concept-preload-obtain">obtain the preload resource</dfn> are defined in [[!HTML]].
       </p>
       <p>
         The terms <dfn data-cite="DOM#concept-document">Document</dfn>, <dfn data-cite="DOM#concept-document-content-type">Content-Type metadata</dfn>,
@@ -162,7 +162,7 @@ document.head.appendChild(res);
     performance.</p>
     <section>
       <h2>Processing</h2>
-      <p>The <dfn>appropriate times</dfn> to <a>obtain the resource</a> are:</p>
+      <p>The <dfn>appropriate times</dfn> to <a>obtain the preload resource</a> are:</p>
       <ul>
         <li>When the user agent that supports [[!RFC5988]] creates a <a>Document</a>
         and processes `Link` headers that contain a <a>preload link</a>.
@@ -212,7 +212,7 @@ document.head.appendChild(res);
       <p>The user agent SHOULD abort the current request if the `href`
       attribute of the <a>link</a> element of a <a>preload link</a> is changed,
       removed, or its value is set to an empty string.</p>
-      <p>At these times, the user agent must <a>obtain the resource</a> given by the
+      <p>At these times, the user agent must <a>obtain the preload resource</a> given by the
       link element.</p>
       <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
       <a>delay the load event</a> of the element's <a>node document</a>.</p>
