@@ -85,7 +85,7 @@
         The term <code><dfn data-cite="RESOURCE-HINTS#dfn-prefetch">prefetch</dfn></code> is defined in [[RESOURCE-HINTS]].
       </p>
       <p>
-        The terms <dfn data-cite="SRI#integrity-metadata">integrity metadata</dfn> and <dfn data-cite="SRI#verification-of-html-document-subresources">verification of HTML document subresources</dfn> is defined in [[SRI]].
+        The terms <dfn data-cite="SRI#integrity-metadata">integrity metadata</dfn> and <dfn data-cite="SRI#verification-of-html-document-subresources">verification of HTML document subresources</dfn> are defined in [[SRI]].
       </p>
     </section>
   <section>
@@ -222,12 +222,13 @@ document.head.appendChild(res);
       must also add responses that are <a>network errors</a> to the fetch group's response cache.</p>
       <div class="note">
         <p>It is important that <a>network errors</a> be added to the fetch group's response cache so
-        that if a preload request results in an error, the actual resource request doesn't re-request
-        the same erroneous response. This also has security implications; consider the case where a
-        developer specifies subresource <a>integrity metadata</a> on a preload request, but not the
-        following resource request. If the preload request fails
+        that if a preload request results in an error, the erroneous response isn't re-requested from
+        the network. This also has security implications; consider the case where a developer specifies
+        subresource <a>integrity metadata</a> on a preload request, but not the following resource request.
+        If the preload request fails
         <a data-cite="!SRI#verification-of-html-document-subresources">subresource integrity verification</a>
-        and is discarded, the resource request will fetch and consume a potentially-malicious response
+        and is discarded, the resource request will fetch and consume a potentially-malicious response from
+        the network
         [[!SRI]].
         </p>
       </div>
