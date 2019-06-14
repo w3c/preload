@@ -64,7 +64,7 @@
         The terms <dfn data-cite="HTML#the-link-element">link</dfn>, 
         <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>, 
         <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
-        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn> and <dfn data-cite="HTML#process-the-linked-resource"></dfn> are defined in [[!HTML]].
+        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn> and <dfn data-cite="HTML#process-the-linked-resource">process the linked resource</dfn> are defined in [[!HTML]].
       </p>
       <p>
         The terms <dfn data-cite="HTML52#match-the-environment">match the environment</dfn> 
@@ -223,13 +223,12 @@ document.head.appendChild(res);
       <div class="note">
         <p>It is important that <a>network errors</a> be added to the fetch group's response cache so
         that if a preload request results in an error, the erroneous response isn't re-requested from
-        the network. This also has security implications; consider the case where a developer specifies
-        subresource <a>integrity metadata</a> on a preload request, but not the following resource request.
-        If the preload request fails
+        the network later. This also has security implications; consider the case where a developer
+        specifies subresource <a>integrity metadata</a> on a preload request, but not the following
+        resource request. If the preload request fails
         <a data-cite="!SRI#verification-of-html-document-subresources">subresource integrity verification</a>
         and is discarded, the resource request will fetch and consume a potentially-malicious response from
-        the network
-        [[!SRI]].
+        the network without verifying its integrity [[!SRI]].
         </p>
       </div>
       <div class="note">
