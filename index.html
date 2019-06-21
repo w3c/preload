@@ -218,10 +218,10 @@ document.head.appendChild(res);
       <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
       <a>delay the load event</a> of the element's <a>node document</a>.</p>
       <p>Once a preload resource <a data-cite="!HTML#process-the-linked-resource">has been processed</a>,
-      the user agent must add the response to the fetch group's response cache. The user agent
-      must also add responses that are <a>network errors</a> to the fetch group's response cache.</p>
+      the user agent must add the response to the preload cache. The user agent must also add
+      responses that are <a>network errors</a> to the preload cache.</p>
       <div class="note">
-        <p>It is important that <a>network errors</a> be added to the fetch group's response cache so
+        <p>It is important that <a>network errors</a> be added to the preload cache so
         that if a preload request results in an error, the erroneous response isn't re-requested from
         the network later. This also has security implications; consider the case where a developer
         specifies subresource <a>integrity metadata</a> on a preload request, but not the following
