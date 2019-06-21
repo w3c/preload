@@ -64,7 +64,7 @@
         The terms <dfn data-cite="HTML#the-link-element">link</dfn>, 
         <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>, 
         <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
-        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn> and <dfn data-cite="HTML#concept-link-obtain">obtain the resource</dfn> are defined in [[!HTML]].
+        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn> and <dfn data-cite="HTML#process-the-linked-resource">process the linked resource</dfn> are defined in [[!HTML]].
       </p>
       <p>
         The terms <dfn data-cite="HTML52#match-the-environment">match the environment</dfn> 
@@ -76,13 +76,16 @@
         <dfn data-cite="DOM#concept-node-document">node document</dfn> are defined in [[!DOM]].
       </p>
       <p>
-        The term <dfn data-cite="FETCH#concept-request-destination">request destination</dfn> is defined in [[!FETCH]].
+        The terms <dfn data-cite="FETCH#concept-request-destination">request destination</dfn> and <dfn data-cite="FETCH#concept-network-error">network error</dfn> are defined in [[!FETCH]].
       </p>
       <p>
         The terms <dfn data-cite="MIMESNIFF#parsable-mime-type">parsable MIME type</dfn> and <dfn data-cite="MIMESNIFF#supported-by-the-user-agent">unsupported MIME type</dfn> are defined in [[!MIMESNIFF]].
       </p>
       <p>
         The term <code><dfn data-cite="RESOURCE-HINTS#dfn-prefetch">prefetch</dfn></code> is defined in [[RESOURCE-HINTS]].
+      </p>
+      <p>
+        The terms <dfn data-cite="SRI#integrity-metadata">integrity metadata</dfn> and <dfn data-cite="SRI#verification-of-html-document-subresources">verification of HTML document subresources</dfn> are defined in [[SRI]].
       </p>
     </section>
   <section>
@@ -165,7 +168,8 @@ document.head.appendChild(res);
     performance.</p>
     <section>
       <h2>Processing</h2>
-      <p>The <dfn>appropriate times</dfn> to <a>obtain the resource</a> are:</p>
+      <p>The <dfn>appropriate times</dfn> to <a>fetch and process the linked resource</a>
+      are:</p>
       <ul>
         <li>When the user agent that supports [[!RFC5988]] creates a <a>Document</a>
         and processes `Link` headers that contain a <a>preload link</a>.
@@ -209,12 +213,24 @@ document.head.appendChild(res);
       <p>The user agent SHOULD abort the current request if the `href`
       attribute of the <a>link</a> element of a <a>preload link</a> is changed,
       removed, or its value is set to an empty string.</p>
-      <p>At these times, the user agent must <a>obtain the resource</a> given by the
-      link element.</p>
+      <p>At these times, the user agent must <a>fetch and process the linked resource</a>
+      given by the link element.</p>
       <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
       <a>delay the load event</a> of the element's <a>node document</a>.</p>
-      <p>Once a <dfn>preload resource has been obtained</dfn>, the user agent
-      must add request to fetch group's response cache.</p>
+      <p>Once a preload resource <a data-cite="!HTML#process-the-linked-resource">has been processed</a>,
+      the user agent must add the response to the preload cache. The user agent must also add
+      responses that are <a>network errors</a> to the preload cache.</p>
+      <div class="note">
+        <p>It is important that <a>network errors</a> be added to the preload cache so
+        that if a preload request results in an error, the erroneous response isn't re-requested from
+        the network later. This also has security implications; consider the case where a developer
+        specifies subresource <a>integrity metadata</a> on a preload request, but not the following
+        resource request. If the preload request fails
+        <a data-cite="!SRI#verification-of-html-document-subresources">subresource integrity verification</a>
+        and is discarded, the resource request will fetch and consume a potentially-malicious response from
+        the network without verifying its integrity [[!SRI]].
+        </p>
+      </div>
       <div class="note">
         <p>In addition to the HTTP cache, all browser implementations provide
         one or more levels of additional caches, which sometimes live before
