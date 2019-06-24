@@ -568,8 +568,8 @@ document.head.appendChild(res);
       call to `fetch()` - i.e. subject to `connect-src`.</li>
     </ul>
     <p>The site authors are encouraged to take the necessary precautions and
-    specify the relevant [[!CSP3]], [[!MIXED-CONTENT]], and
-    [[!REFERRER-POLICY]] rules, such that the browser can enforce them when
+    specify the relevant [[CSP3]], [[MIXED-CONTENT]], and
+    [[REFERRER-POLICY]] rules, such that the browser can enforce them when
     initiating the preload request. Additionally, if preload directives are
     provided via the `Link` HTTP response header, then the relevant policies
     should also be delivered as an HTTP response header - e.g. see <a href=
