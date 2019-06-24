@@ -61,14 +61,12 @@
         Dependencies
       </h2>
       <p>
-        The terms <dfn data-cite="HTML#the-link-element">link</dfn>, 
-        <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>, 
+        The terms <dfn data-cite="HTML#the-link-element">link</dfn>,
+        <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>,
         <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
-        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn> and <dfn data-cite="HTML#process-the-linked-resource">process the linked resource</dfn> are defined in [[!HTML]].
-      </p>
-      <p>
-        The terms <dfn data-cite="HTML52#match-the-environment">match the environment</dfn> 
-        are defined in [[!HTML52]].
+        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn>,
+        <dfn data-cite="HTML#matches-the-environment">match the environment</dfn>,
+         and <dfn data-cite="HTML#process-the-linked-resource">process the linked resource</dfn> are defined in [[HTML]].
       </p>
       <p>
         The terms <dfn data-cite="DOM#concept-document">Document</dfn>, <dfn data-cite="DOM#concept-document-content-type">Content-Type metadata</dfn>,
@@ -264,7 +262,7 @@ document.head.appendChild(res);
     </section>
     <section>
       <h2>`as` attribute</h2>
-      <p class=note>[[!HTML]] [defines](https://html.spec.whatwg.org/#attr-link-as) the
+      <p class=note>[[HTML]] <a data-cite="HTML#attr-link-as">defines</a> the
       `as` content and IDL attributes. The attribute is necessary to guarantee
       correct prioritization, request matching, application of the correct
       [[CSP3]] policy, and setting of the appropriate `Accept` request
@@ -570,8 +568,8 @@ document.head.appendChild(res);
       call to `fetch()` - i.e. subject to `connect-src`.</li>
     </ul>
     <p>The site authors are encouraged to take the necessary precautions and
-    specify the relevant [[!CSP3]], [[!MIXED-CONTENT]], and
-    [[!REFERRER-POLICY]] rules, such that the browser can enforce them when
+    specify the relevant [[CSP3]], [[MIXED-CONTENT]], and
+    [[REFERRER-POLICY]] rules, such that the browser can enforce them when
     initiating the preload request. Additionally, if preload directives are
     provided via the `Link` HTTP response header, then the relevant policies
     should also be delivered as an HTTP response header - e.g. see <a href=
@@ -580,7 +578,7 @@ document.head.appendChild(res);
   </section>
   <section class="appendix informative">
     <h2>Acknowledgments</h2>
-    <p>This document reuses text from the [[!HTML]] specification, edited by
+    <p>This document reuses text from the [[HTML]] specification, edited by
     Ian Hickson, as permitted by the license of that specification.</p>
   </section>
 </body>
