@@ -123,6 +123,10 @@
     early, high-priority, and non-render-blocking fetch of a CSS resource that
     can then be applied by the application at appropriate time:</p>
     <pre class="example html" title="Using markup">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
 &lt;!-- preload stylesheet resource via declarative markup --&gt;
 &lt;link rel="preload" href="/styles/other.css" as="style"&gt;
 
@@ -406,6 +410,10 @@ document.head.appendChild(res);
       to improve page performance:</p>
       <pre class="example nolinks html" title=
       "Early fetch of critical resources">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
 &lt;link rel="preload" href="/assets/font.woff2" as="font" type="font/woff2"&gt;
 &lt;link rel="preload" href="/style/other.css" as="style"&gt;
 &lt;link rel="preload" href="//example.com/resource" as="fetch" crossorigin&gt;
@@ -421,6 +429,10 @@ document.head.appendChild(res);
       or images with a `crossorigin` attribute, must also include a
       `crossorigin` attribute, in order for the resource to be properly
       used.</p>
+      <p class="note">Even though it makes sense to declare preload links
+      early in the HTML source of the document, do not put them before
+      the <a data-cite="!HTML#charset">character encoding declaration</a>,
+      which needs to be seen even earlier.</p>
     </section>
     <section>
       <h2>Early fetch and application defined execution</h2>
@@ -450,6 +462,10 @@ document.head.appendChild(res);
       behavior can be defined across a mix of content-types - the application
       is in full control over when and how each resource is applied.</p>
       <pre class="example html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
 &lt;script&gt;
   function preloadFinished(e) { ... }
   function preloadError(e)  { ... }
@@ -473,9 +489,17 @@ document.head.appendChild(res);
   Link: &lt;https://fonts.example.com/font.woff2&gt;; rel=preload; as=font; crossorigin; type="font/woff2"
 </pre>
       <pre class="example html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
   &lt;link rel="preload" href="//example.com/widget.html" as="document"&gt;
 </pre>
       <pre class="example html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
   &lt;script&gt;
   var res = document.createElement("link");
   res.rel = "preload";
