@@ -375,6 +375,25 @@ document.head.appendChild(res);
       have additional information indicating that it may already be in cache),
       while `/app/script.js` should be considered as a candidate for server
       push.</p>
+      <p>The developer MAY also use the `pushheaders` target attribute
+      ([[!RFC5988]] section 5.4) to hint the server about which headers to copy
+      from the explicit request to the push request. The `pushheaders` attribute
+      accepts a list of field names as defined in section 3.2 of [[!RFC7230]].
+      The value `*` hints the server to copy all headers.
+      For example:</p>
+      <pre class="example nolinks http">
+  Link: &lt;/resource1&gt;; rel=preload; as=fetch; pushheaders="Authorization, Accept"
+  Link: &lt;/resource2&gt;; rel=preload; as=fetch; pushheaders="*"
+</pre>
+      <p class="note">The above example indicates to an HTTP/2 push capable
+      server that the request for `/resource1` should contain the same
+      `Authorization` and `Accept` HTTP headers as the explicit request, and
+      that the request for `/resource2` should contain all headers sent by
+      the client. This is convenient when the client requests resources
+      related to the main one using mechanisms such as
+      <a href="https://tools.ietf.org/html/draft-dunglas-vulcain">Vulcain</a>
+      or <a href="https://tools.ietf.org/html/draft-pot-prefer-push">Prefer-Push</a>,
+      which may require authorization or content negotiation.</p>
       <p>Initiating server push for a <a>preload link</a> is an optional
       optimization. For example, the server might omit initiating push if it
       believes that the response is available in the client's cache: the client
