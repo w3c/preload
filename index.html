@@ -63,7 +63,7 @@
         The terms <dfn data-cite="HTML#the-link-element">link</dfn>,
         <dfn data-cite="HTML#insert-an-element-into-a-document">inserted into a document</dfn>,
         <dfn data-cite="HTML#resolve-a-url">resolve</dfn>, <dfn data-cite="HTML#url">url</dfn>, <dfn data-cite="HTML#attr-link-crossorigin">crossorigin</dfn>,
-        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#delay-the-load-event">delay the load event</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn>,
+        <dfn data-cite="HTML#origin-2">origin</dfn>, <dfn data-cite="HTML#external-resource-link">external resource link</dfn>, <dfn data-cite="HTML#valid-media-query-list">valid media query list</dfn>, <dfn data-cite="HTML#queue-a-task">queue a task</dfn>, <dfn data-cite="HTML#fetch-and-process-the-linked-resource">fetch and process the linked resource</dfn>,
         <dfn data-cite="HTML#matches-the-environment">match the environment</dfn>,
          and <dfn data-cite="HTML#process-the-linked-resource">process the linked resource</dfn> are defined in [[HTML]].
       </p>
@@ -216,8 +216,6 @@ document.head.appendChild(res);
       removed, or its value is set to an empty string.</p>
       <p>At these times, the user agent must <a>fetch and process the linked resource</a>
       given by the link element.</p>
-      <p>Obtaining the resource given by a <a>preload link</a> element MUST NOT
-      <a>delay the load event</a> of the element's <a>node document</a>.</p>
       <p>Once a preload resource <a data-cite="!HTML#process-the-linked-resource">has been processed</a>,
       the user agent must add the response to the preload cache. The user agent must also add
       responses that are <a>network errors</a> to the preload cache.</p>
