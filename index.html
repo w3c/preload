@@ -235,7 +235,7 @@ document.head.appendChild(res);
       <div class="note">
         <p>In addition to the HTTP cache, all browser implementations provide
         one or more levels of additional caches, which sometimes live before
-        the HTTP cache (e.g. HTTP/2 server push responses are typically not
+        the HTTP cache (e.g. server push responses are typically not
         committed to HTTP cache until a client request is made), and after the
         HTTP cache (e.g. in-process memory caches). These caches are not
         defined today and need to be defined in Fetch API— see [related
@@ -350,7 +350,7 @@ document.head.appendChild(res);
       </div>
     </section>
     <section>
-      <h2>Server Push (HTTP/2 and HTTP/3)</h2>
+      <h2>Server Push</h2>
       <p>HTTP/2 ([[!RFC7540]]) and <a href="https://tools.ietf.org/html/draft-ietf-quic-http-29">HTTP/3</a>
       allow a server to pre-emptively send ("push")
       responses to the client. A pushed response is semantically equivalent to
