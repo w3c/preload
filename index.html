@@ -235,7 +235,7 @@ document.head.appendChild(res);
       <div class="note">
         <p>In addition to the HTTP cache, all browser implementations provide
         one or more levels of additional caches, which sometimes live before
-        the HTTP cache (e.g. HTTP/2 server push responses are typically not
+        the HTTP cache (e.g. server push responses are typically not
         committed to HTTP cache until a client request is made), and after the
         HTTP cache (e.g. in-process memory caches). These caches are not
         defined today and need to be defined in Fetch API— see [related
@@ -350,8 +350,9 @@ document.head.appendChild(res);
       </div>
     </section>
     <section>
-      <h2>Server Push (HTTP/2)</h2>
-      <p>HTTP/2 ([[!RFC7540]]) allows a server to pre-emptively send ("push")
+      <h2>Server Push</h2>
+      <p>HTTP/2 ([[!RFC7540]]) and <a href="https://tools.ietf.org/html/draft-ietf-quic-http-29">HTTP/3</a>
+      allow a server to pre-emptively send ("push")
       responses to the client. A pushed response is semantically equivalent to
       a server responding to a request and, similar to a preloaded response, is
       retained by the user agent and executed by the application when matched
@@ -370,7 +371,7 @@ document.head.appendChild(res);
   Link: &lt;/app/style.css&gt;; rel=preload; as=style; nopush
   Link: &lt;/app/script.js&gt;; rel=preload; as=script
 </pre>
-      <p class="note">The above example indicates to an HTTP/2 push capable
+      <p class="note">The above example indicates to a Server Push capable
       server that `/app/style.css` should not be pushed (e.g. the origin may
       have additional information indicating that it may already be in cache),
       while `/app/script.js` should be considered as a candidate for server
@@ -382,7 +383,7 @@ document.head.appendChild(res);
       initiate the request to the server if the resource is missing.
       Alternatively, the server might omit initiating push due to operational
       concerns, such as available server resources or other criteria. Finally,
-      the use of server push is subject to negotiated HTTP/2 connection
+      the use of server push is subject to negotiated HTTP/2 or HTTP/3 connection
       settings: the client may limit or outright disable the use of server
       push. Applications cannot rely on the availability and use of server
       push.</p>
