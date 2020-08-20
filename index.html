@@ -371,7 +371,7 @@ document.head.appendChild(res);
   Link: &lt;/app/style.css&gt;; rel=preload; as=style; nopush
   Link: &lt;/app/script.js&gt;; rel=preload; as=script
 </pre>
-      <p class="note">The above example indicates to an HTTP/2 and HTTP/3 push capable
+      <p class="note">The above example indicates to a Server Push capable
       server that `/app/style.css` should not be pushed (e.g. the origin may
       have additional information indicating that it may already be in cache),
       while `/app/script.js` should be considered as a candidate for server
