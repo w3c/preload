@@ -1,10 +1,6 @@
 # Preload
 
-This specification defines the <a>preload</a> relationship of the HTML Link Element (`<link>`).
+This repo used to hold the specification defining the Preload relationship of the HTML Link element.
+Its processing has now been fully integrated into HTML: https://html.spec.whatwg.org/multipage/links.html#link-type-preload
 
-* Read latest draft: https://w3c.github.io/preload/
-* Discuss on [public-webperf](https://www.w3.org/Search/Mail/Public/search?keywords=%5Bpreload%5D&hdr-1-name=subject&hdr-1-query=&index-grp=Public_FULL&index-type=t&type-index=public-web-perf)
-
-Questions, suggestions? Please open an issue or send a pull request!
-
-See also [Web performance README](https://github.com/w3c/web-performance/blob/gh-pages/README.md)
+Any issues should be filed against the HTML spec: https://github.com/whatwg/html/issues 
